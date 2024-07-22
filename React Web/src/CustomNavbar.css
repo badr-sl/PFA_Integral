@@ -1,0 +1,20 @@
+/* CustomNavbar.css */
+
+.custom-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .navbar-brand {
+    margin-right: auto;
+  }
+  
+  .navbar-nav {
+    margin-left: auto;
+  }
+  
+  .profile-wrapper {
+    margin-left: auto;
+  }
+  

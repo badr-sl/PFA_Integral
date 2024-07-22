@@ -1,0 +1,432 @@
+/* Styles for the Login component */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 2rem 0;
+}
+
+.login-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.login-form .form-group label {
+  font-weight: bold;
+  color: #333;
+}
+
+.login-form .form-control {
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.login-form .input-group-text {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.login-form .btn {
+  border-radius: 10px;
+  padding: 0.75rem;
+  font-weight: bold;
+}
+
+.login-form .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.login-form .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.login-form .text-center {
+  margin-top: 1rem;
+}
+//----------------------------------------------------------------
+/* CustomNavbar.css */
+
+#nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 24px;
+  color: #1A73E8; 
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.logo .brackets {
+  color: #000000;
+}
+#titreNav{
+  margin-left: 45px;
+}
+#iconProfile{
+  margin-right : 15px;
+}
+
+//----------------------------------------------------------------
+/* Styles for the Admin Sidebar */
+#sidebarA {
+  position: fixed;
+  top: 55px; 
+  bottom: 0;
+  width: 250px; 
+  overflow-y: auto;
+  z-index: 1000;
+}
+.icon-button{
+  border: 0;
+  background-color: transparent;
+  margin-left:70px;
+  width:30px;
+}
+
+/* Main content adjustments */
+.main-content {
+  margin-left: 50px; 
+  padding-top: 10px; 
+}
+
+/* Table styles */
+.table-responsive {
+  border-radius: 0.25rem;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  max-height: 50px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  //-webkit-line-clamp: 0;
+
+
+}
+
+.table th {
+  border-bottom: 2px solid #dee2e6;
+  background-color: #f8f9fa;
+
+}
+:is(.table td, th):nth-child(2) {
+  max-width:250px !important;
+}
+:is(.table td, th):nth-child(1) {
+  max-width:250px !important;
+}
+
+
+
+.table td {
+  border-bottom: 1px solid #dee2e6;
+}
+.table td#stats :nth-child(1) {
+  min-width:100px !important;
+  position:relative;
+}
+.table td#action :nth-child(1){
+  position:relative;
+  left:1%
+}
+.table td#action :nth-child(2){
+  position:relative;
+  left:1%
+}
+.table td#action :nth-child(3){
+  position:relative;
+  left:1%
+}
+td>button.btn {
+  min-width:85px !important;
+  position:relative;
+  left:9%
+}
+td>button#icon {
+  position:relative;
+  right: 13%;
+}
+
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Modal styling */
+.modal-content {
+  border-radius: 0.25rem;
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  padding: 0.75rem;
+}
+
+/* Additional styling for the profile page */
+.profile-container {
+  
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  background-color: #f5f5f5;
+  padding: 2rem 0;
+}
+
+.profile-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  text-align: center;
+  width: 500px; 
+  margin: auto;
+}
+
+.profile-avatar {
+  width: 120px; 
+  height: 120px; 
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 2px solid #007bff;
+  padding: 5px;
+}
+
+.profile-info {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.profile-info p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.profile-info strong {
+  display: inline-block;
+  width: 150px;
+  color: #007bff;
+}
+//----------------------------------------------------------------
+/* Additional styling for the UserHome page */
+.user-home-container {
+  background-color: #f5f5f5;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.welcome-card, .activity-summary-card, .recent-tasks-card, .useful-links-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.welcome-card .card-body {
+  text-align: center;
+}
+
+.welcome-card .card-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-card .card-text {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.activity-summary-card .card-header, .recent-tasks-card .card-header, .useful-links-card .card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #007bff;
+  color: #ffffff;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.activity-summary-card .list-group-item, .recent-tasks-card .list-group-item, .useful-links-card .list-group-item {
+  font-size: 1.1rem;
+}
+
+.recent-tasks-card .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recent-tasks-card .btn {
+  align-self: flex-end;
+}
+
+.useful-links-card .list-group-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.useful-links-card .list-group-item a:hover {
+  text-decoration: underline;
+}
+//----------------------------------------------------------------
+/* Sidebar container */
+.sidebar {
+  width: 300px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar links */
+.nav-link {
+  font-size: 1.1rem;
+  padding: 10px;
+  color: #333;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+ 
+  color: #fff;
+}
+
+.nav-item.active .nav-link {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.nav-item:not(.active) .nav-link {
+  color: #333;
+}
+
+/* Ensure proper spacing */
+.nav-pills {
+  margin-top: 20px;
+}
+
+.nav-item + .nav-item {
+  margin-top: 10px;
+}
+#btnEdit{
+  width:200px; 
+  left: 52px;
+  align-items: center;
+}
+//----------------------------------------------------------------
+/* Model styles de le popap de affectation  */
+.icon-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.icon-button:focus {
+  outline: none;
+}
+
+.modal.show {
+  display: block;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+}
+
+.modal-dialog {
+  max-width: 500px;
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+  border-bottom: none ;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.btn-close {
+  
+  border: 20px;
+  font-size: 1.2rem;
+  color:#ffffff;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
