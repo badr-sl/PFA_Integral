@@ -23,6 +23,8 @@ const ManageUsers: React.FC = () => {
     role: 'user'
   });
   const [email, setEmail] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState('');
 
   useEffect(() => {
     dispatch(fetchAllUsers());
@@ -72,6 +74,20 @@ const ManageUsers: React.FC = () => {
     setShowModal(true);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setRoleFilter(e.target.value);
+  };
+
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRole = roleFilter ? user.role === roleFilter : true;
+    return matchesSearch && matchesRole;
+  });
+
   return (
     <div>
       <Navbar />
@@ -80,8 +96,26 @@ const ManageUsers: React.FC = () => {
         <div className="main-content container mt-5">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h2 className="card-title mb-4">Manage Users</h2>
-              <button className="btn btn-primary mb-3" onClick={handleAddUser}><FaUserPlus style={{position:"relative",bottom:"2px"}} /> Add User</button>
+              <h2 className="card-title mb-4">Manage Users :</h2>
+              <div className="d-flex justify-content-between mb-3">
+                <input
+                  type="text"
+                  className="form-control me-2"
+                  placeholder="Search users..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <select
+                  className="form-select"
+                  value={roleFilter}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">All Roles</option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <button className="btn btn-primary mb-3" onClick={handleAddUser}><FaUserPlus style={{ position: "relative", bottom: "2px" }} /> Add User</button>
               {loading ? <div className="alert alert-info">Loading...</div> : error ? <div className="alert alert-danger">{error}</div> : (
                 <div className="table-responsive">
                   <table className="table table-hover table-bordered table-striped">
@@ -95,14 +129,14 @@ const ManageUsers: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map(user => (
+                      {filteredUsers.map(user => (
                         <tr key={user.id}>
                           <td>{user.name}</td>
                           <td>{user.email}</td>
                           <td>{user.PhoneNumber}</td>
                           <td>{user.role}</td>
                           <td className="d-flex align-items-center justify-content-evenly">
-                            <button  className="btn btn-warning btn-sm me-2 d-flex justify-content-center" style={{width:"100px"}} onClick={() => handleEdit(user)}><FontAwesomeIcon icon={faUserPen} style={{position:"relative",right:"10%",top:"2px"}} />  Edit</button>
+                            <button className="btn btn-warning btn-sm me-2 d-flex justify-content-center" style={{ width: "100px" }} onClick={() => handleEdit(user)}><FontAwesomeIcon icon={faUserPen} style={{ position: "relative", right: "10%", top: "2px" }} /> Edit</button>
                           </td>
                         </tr>
                       ))}

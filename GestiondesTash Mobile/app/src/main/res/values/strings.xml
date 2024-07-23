@@ -16,4 +16,6 @@
     <string name="sujet">Sujet :</string>
     <string name="titre">Titre :</string>
     <string name="formulaire">Formulaire</string>
+    <string name="home">Home</string>
+    <string name="tasks">Tasks</string>
 </resources>

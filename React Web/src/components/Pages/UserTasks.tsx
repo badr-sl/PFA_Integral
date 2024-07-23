@@ -14,6 +14,7 @@ const UserTasks: React.FC = () => {
   const { users } = useSelector((state: RootState) => state.users);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('');
+  const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
 
   useEffect(() => {
     dispatch(fetchAllUsers());
@@ -25,20 +26,32 @@ const UserTasks: React.FC = () => {
     }
   }, [dispatch, selectedUserId]);
 
+  useEffect(() => {
+    applyFilters();
+  }, [tasks, statusFilter]);
+
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedUserId(parseInt(e.target.value));
+    const userId = parseInt(e.target.value);
+    setSelectedUserId(userId);
+    if (userId) {
+      dispatch(fetchUserTasks(userId));
+    }
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusFilter(e.target.value);
   };
 
-  const filteredTasks = tasks.filter(task => {
-    if (!statusFilter) {
-      return true;
-    }
-    return task.status === statusFilter;
-  });
+  const applyFilters = () => {
+    setFilteredTasks([]); // Clear the table
+    setTimeout(() => { // Ensure the table is cleared before applying the filter
+      let tempTasks = tasks;
+      if (statusFilter) {
+        tempTasks = tempTasks.filter(task => task.status === statusFilter);
+      }
+      setFilteredTasks(tempTasks);
+    }, 100);
+  };
 
   return (
     <div>
@@ -51,7 +64,7 @@ const UserTasks: React.FC = () => {
               <h2 className="card-title mb-4">User Tasks :</h2>
               <div className="mb-4">
                 <label htmlFor="userSelect" className="form-label">Select User:</label>
-                <select id="userSelect" className="form-select" onChange={handleUserChange}>
+                <select id="userSelect" className="form-select" onChange={handleUserChange} value={selectedUserId || ''}>
                   <option value="">-- Select a User --</option>
                   {users.map(user => (
                     <option key={user.id} value={user.id}>{user.name}</option>
@@ -60,7 +73,7 @@ const UserTasks: React.FC = () => {
               </div>
               <div className="mb-4">
                 <label htmlFor="statusSelect" className="form-label">Filter by Status:</label>
-                <select id="statusSelect" className="form-select" onChange={handleStatusChange}>
+                <select id="statusSelect" className="form-select" onChange={handleStatusChange} value={statusFilter}>
                   <option value="">-- All Statuses --</option>
                   <option value="todo">To Do</option>
                   <option value="in-progress">In Progress</option>
@@ -70,7 +83,7 @@ const UserTasks: React.FC = () => {
               {loading ? <div className="alert alert-info">Loading...</div> : error ? <div className="alert alert-danger">{error}</div> : (
                 <>
                   {filteredTasks.length === 0 ? (
-                    <div>No tasks found for the selected filters.</div>
+                    <div>No tasks found.</div>
                   ) : (
                     <div className="table-responsive">
                       <table className="table table-hover table-bordered table-striped">
@@ -90,7 +103,7 @@ const UserTasks: React.FC = () => {
                               <td>{task.title}</td>
                               <td>{task.description}</td>
                               <td>
-                                <span style={{width:"85px",position:"relative",left:"24px"}} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
+                                <span style={{ width: "85px", position: "relative", left: "24px" }} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
                                   {task.status}
                                 </span>
                               </td>

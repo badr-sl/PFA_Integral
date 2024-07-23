@@ -1,0 +1,21 @@
+<resources>
+    <style name="TaskTitleText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="TaskDescriptionText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="TaskStatusText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/statusTextColor</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+
+</resources>

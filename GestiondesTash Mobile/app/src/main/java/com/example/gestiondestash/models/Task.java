@@ -1,20 +1,12 @@
 package com.example.gestiondestash.models;
 
-public class TaskRequest {
+public class Task {
     private String title;
     private String description;
     private String status;
-    private String priority;
+    private int priority;
     private String dueDate;
-
-    // Constructeurs
-    public TaskRequest(String title, String description, String status, String priority, String dueDate) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.priority = priority;
-        this.dueDate = dueDate;
-    }
+    private int progress;
 
     public String getTitle() {
         return title;
@@ -40,11 +32,11 @@ public class TaskRequest {
         this.status = status;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
@@ -55,5 +47,12 @@ public class TaskRequest {
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
-}
 
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+}

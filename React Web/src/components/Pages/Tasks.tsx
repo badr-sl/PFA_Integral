@@ -18,6 +18,7 @@ const Tasks: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
 
   useEffect(() => {
     if (!token) {
@@ -27,6 +28,10 @@ const Tasks: React.FC = () => {
       dispatch(fetchUserTasks(user.id));
     }
   }, [dispatch, token, user, navigate]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [tasks, statusFilter, searchQuery]);
 
   const handleShowDetails = (task: any) => {
     setSelectedTask(task);
@@ -66,11 +71,19 @@ const Tasks: React.FC = () => {
     setStatusFilter(e.target.value);
   };
 
-  const filteredTasks = tasks.filter((task) => {
-    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter ? task.status === statusFilter : true;
-    return matchesSearch && matchesStatus;
-  });
+  const applyFilters = () => {
+    setFilteredTasks([]); // Clear the table
+    setTimeout(() => { // Ensure the table is cleared before applying the filter
+      let tempTasks = tasks;
+      if (searchQuery) {
+        tempTasks = tempTasks.filter(task => task.title.toLowerCase().includes(searchQuery.toLowerCase()));
+      }
+      if (statusFilter) {
+        tempTasks = tempTasks.filter(task => task.status === statusFilter);
+      }
+      setFilteredTasks(tempTasks);
+    }, 100);
+  };
 
   return (
     <div>

@@ -9,6 +9,7 @@ import com.example.gestiondestash.models.TaskAssignmentRequest;
 import com.example.gestiondestash.models.TaskAssignmentResponse;
 import com.example.gestiondestash.models.TaskRequest;
 import com.example.gestiondestash.models.TaskResponse;
+import com.example.gestiondestash.models.TaskResponseContainer;
 import com.example.gestiondestash.models.TaskStatusRequest;
 import com.example.gestiondestash.models.UserResponse;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.DELETE;
@@ -72,7 +74,8 @@ public interface ApiService {
     Call<TaskResponse> updateUserTaskStatus(@Path("id") int taskId, @Body TaskStatusRequest taskStatusRequest);
 
     @GET("user/{userId}/tasks")
-    Call<List<TaskResponse>> getUserTasksById(@Path("userId") int userId);
+    Call<TaskResponseContainer> getUserTasksById(@Path("userId") int userId, @Header("Authorization") String token);
+
 
     @POST("task-assignments")
     Call<TaskAssignmentResponse> createTaskAssignment(@Body TaskAssignmentRequest taskAssignmentRequest);
