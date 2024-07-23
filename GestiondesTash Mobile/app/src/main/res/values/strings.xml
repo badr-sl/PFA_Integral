@@ -18,4 +18,9 @@
     <string name="formulaire">Formulaire</string>
     <string name="home">Home</string>
     <string name="tasks">Tasks</string>
+    <string-array name="task_status_array">
+        <item>todo</item>
+        <item>in-progress</item>
+        <item>completed</item>
+    </string-array>
 </resources>
