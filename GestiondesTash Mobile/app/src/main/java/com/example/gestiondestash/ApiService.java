@@ -80,6 +80,6 @@ public interface ApiService {
     @POST("task-assignments")
     Call<TaskAssignmentResponse> createTaskAssignment(@Body TaskAssignmentRequest taskAssignmentRequest);
     @PUT("tasks/{id}")
-    Call<TaskResponse> updateTask(@Path("id") int taskId, @Body TaskResponse taskResponse);
+    Call<TaskResponse> updateTask(@Path("id") int taskId, @Body TaskResponse taskResponse, @Header("Authorization") String authToken);
 }
 

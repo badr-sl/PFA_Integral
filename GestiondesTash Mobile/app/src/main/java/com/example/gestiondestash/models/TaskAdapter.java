@@ -1,7 +1,8 @@
 package com.example.gestiondestash.models;
-
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private List<TaskResponse> taskList;
     private Context context;
+    private static final String TAG = "TaskAdapter";
 
-    public TaskAdapter(List<TaskResponse> taskList) {
+    public TaskAdapter(List<TaskResponse> taskList, Context context) {
         this.taskList = taskList;
         this.context = context;
     }
@@ -84,6 +86,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         EditText titleEditText = dialogView.findViewById(R.id.edit_task_title);
         EditText descriptionEditText = dialogView.findViewById(R.id.edit_task_description);
         Spinner statusSpinner = dialogView.findViewById(R.id.edit_task_status);
+        TextView progressValueTextView = dialogView.findViewById(R.id.edit_task_progress_value);
         SeekBar progressSeekBar = dialogView.findViewById(R.id.edit_task_progress);
         Button saveButton = dialogView.findViewById(R.id.button_save_task);
 
@@ -99,6 +102,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         // Set up seek bar
         progressSeekBar.setProgress(task.getProgress());
+        progressValueTextView.setText(task.getProgress() + "%");
+
+        // Update the TextView as the SeekBar value changes
+        progressSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressValueTextView.setText(progress + "%");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Do nothing
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Do nothing
+            }
+        });
 
         AlertDialog dialog = builder.create();
 
@@ -121,6 +143,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         dialog.show();
     }
 
+
     private int getStatusPosition(String status) {
         switch (status) {
             case "todo":
@@ -135,8 +158,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     private void updateTask(TaskResponse task, AlertDialog dialog) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+
         ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
-        Call<TaskResponse> call = apiService.updateTask(task.getId(), task);
+        Call<TaskResponse> call = apiService.updateTask(task.getId(), task, "Bearer " + token);
 
         call.enqueue(new Callback<TaskResponse>() {
             @Override
@@ -147,12 +173,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     dialog.dismiss();
                 } else {
                     Toast.makeText(context, "Failed to update task", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "API Error: " + response.code() + " - " + response.message());
+                    try {
+                        Log.e(TAG, "API Error Body: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading error body", e);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<TaskResponse> call, Throwable t) {
                 Toast.makeText(context, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Network Error: ", t);
             }
         });
     }

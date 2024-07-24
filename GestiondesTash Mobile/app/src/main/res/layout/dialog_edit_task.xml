@@ -13,12 +13,24 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:layout_marginBottom="4dp" />
+
     <EditText
         android:id="@+id/edit_task_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Title"
         android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_marginBottom="4dp" />
 
     <EditText
         android:id="@+id/edit_task_description"
@@ -27,17 +39,36 @@
         android:hint="Description"
         android:layout_marginBottom="8dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:layout_marginBottom="4dp" />
+
     <Spinner
         android:id="@+id/edit_task_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Progress"
+        android:layout_marginBottom="4dp" />
+
     <SeekBar
         android:id="@+id/edit_task_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/edit_task_progress_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="0%" />
 
     <Button
         android:id="@+id/button_save_task"

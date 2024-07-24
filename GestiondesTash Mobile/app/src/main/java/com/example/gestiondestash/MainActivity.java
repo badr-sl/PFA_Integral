@@ -71,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (response.isSuccessful() && response.body() != null) {
                     List<TaskResponse> taskList = response.body().getData();
                     Log.d(TAG, "Tasks loaded successfully, count: " + taskList.size());
-                    taskAdapter = new TaskAdapter(taskList);
-                    recyclerView.setAdapter(taskAdapter); // Attachez l'adaptateur ici
+                    taskAdapter = new TaskAdapter(taskList, MainActivity.this);
+                    recyclerView.setAdapter(taskAdapter);
+
                     Log.d(TAG, "Adapter attached to RecyclerView");
                 } else {
                     Log.e(TAG, "Failed to load tasks, response code: " + response.code());
@@ -97,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_tasks) {
             Toast.makeText(this, "Tasks clicked", Toast.LENGTH_SHORT).show();
         }
-        // Gérer les autres éléments de menu selon les besoins
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -6,6 +6,7 @@ public class TaskRequest {
     private String status;
     private String priority;
     private String dueDate;
+    private  int progress;
 
     // Constructeurs
     public TaskRequest(String title, String description, String status, String priority, String dueDate) {
@@ -14,6 +15,7 @@ public class TaskRequest {
         this.status = status;
         this.priority = priority;
         this.dueDate = dueDate;
+        this.progress= progress;
     }
 
     public String getTitle() {
@@ -54,6 +56,9 @@ public class TaskRequest {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+    public int getProgress() { return progress; }
+    public void setProgress(int newProgress) {
     }
 }
 
