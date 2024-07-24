@@ -18,6 +18,8 @@
     <string name="formulaire">Formulaire</string>
     <string name="home">Home</string>
     <string name="tasks">Tasks</string>
+    <string name="profile_image" />
+    <string name="profile_icon">Profil</string>
     <string-array name="task_status_array">
         <item>todo</item>
         <item>in-progress</item>

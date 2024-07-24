@@ -59,7 +59,7 @@ const Tasks: React.FC = () => {
     if (selectedTask) {
       await dispatch(updateTask(selectedTask));
       handleCloseModal();
-      dispatch(fetchUserTasks(user.id)); // Re-fetch tasks after updating
+      dispatch(fetchUserTasks(user.id)); 
     }
   };
 

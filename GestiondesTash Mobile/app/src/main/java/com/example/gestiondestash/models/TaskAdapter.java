@@ -69,7 +69,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 break;
         }
 
-        // Edit button click listener
         holder.editButton.setOnClickListener(v -> showEditDialog(holder.itemView.getContext(), task));
     }
 
@@ -100,7 +99,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         statusSpinner.setAdapter(adapter);
         statusSpinner.setSelection(getStatusPosition(task.getStatus()));
 
-        // Set up seek bar
+
         progressSeekBar.setProgress(task.getProgress());
         progressValueTextView.setText(task.getProgress() + "%");
 
@@ -113,12 +112,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // Do nothing
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // Do nothing
+
             }
         });
 
@@ -136,7 +135,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             task.setStatus(newStatus);
             task.setProgress(newProgress);
 
-            // Call API to update task
             updateTask(task, dialog);
         });
 

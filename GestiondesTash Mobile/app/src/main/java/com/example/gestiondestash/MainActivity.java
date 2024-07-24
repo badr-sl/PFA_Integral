@@ -1,9 +1,13 @@
 package com.example.gestiondestash;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +44,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ImageView iconProfile = findViewById(R.id.icon_profile);
+        iconProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProfileMenu(v);
+            }
+        });
+
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -52,7 +64,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadTasks();
     }
 
-    private void loadTasks() {
+    private void showProfileMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_profile, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_profile_details) {
+                    Toast.makeText(MainActivity.this, "Profile Details clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (itemId == R.id.nav_logout) {
+                    logout();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
+    public void loadTasks() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
         String token = sharedPreferences.getString("token", "");
@@ -73,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d(TAG, "Tasks loaded successfully, count: " + taskList.size());
                     taskAdapter = new TaskAdapter(taskList, MainActivity.this);
                     recyclerView.setAdapter(taskAdapter);
-
                     Log.d(TAG, "Adapter attached to RecyclerView");
                 } else {
                     Log.e(TAG, "Failed to load tasks, response code: " + response.code());
@@ -94,13 +126,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_tasks) {
             Toast.makeText(this, "Tasks clicked", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_profile_details) {
+            Toast.makeText(this, "Profile Details clicked", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_logout) {
+            logout();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     @Override

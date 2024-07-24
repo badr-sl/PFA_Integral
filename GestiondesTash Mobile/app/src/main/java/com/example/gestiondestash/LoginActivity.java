@@ -67,18 +67,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
 
-                    // Vérifiez s'il y a une erreur spécifique à afficher
+
                     if (loginResponse.getMessage() != null) {
                         Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
-                        // Affichez le message de succès ou d'informations
+
                         Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
-                    // Sauvegarder les informations de l'utilisateur
                     saveUserInfo(loginResponse.getUser(), loginResponse.getToken());
 
-                    // Redirigez vers une autre activité si nécessaire
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -89,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject errorJson = new JSONObject(errorBodyString);
                         String errorMessage = errorJson.getString("message");
 
-                        // Affichez l'erreur à l'utilisateur à l'aide de Toast
                         Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     } catch (IOException | JSONException e) {
                         // En cas d'erreur lors de la lecture du corps de l'erreur
