@@ -1,4 +1,5 @@
 package com.example.gestiondestash.models;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private List<TaskResponse> taskList;
     private Context context;
+    private int expandedPosition = -1; // Position of the currently expanded card
     private static final String TAG = "TaskAdapter";
 
     public TaskAdapter(List<TaskResponse> taskList, Context context) {
@@ -50,8 +53,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskResponse task = taskList.get(position);
         holder.title.setText(task.getTitle());
-        holder.description.setText(task.getDescription());
         holder.status.setText(task.getStatus());
+        holder.description.setText(task.getDescription());
         holder.priority.setText(String.valueOf(task.getPriority()));
         holder.dueDate.setText(task.getDueDate());
         holder.progress.setText(String.valueOf(task.getProgress()) + "%");
@@ -69,6 +72,39 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 break;
         }
 
+        // Expand/Collapse button click listener
+        holder.expandCollapseButton.setOnClickListener(v -> {
+            if (expandedPosition == holder.getAdapterPosition()) {
+                // Collapse the currently expanded card
+                expandedPosition = -1;
+                notifyItemChanged(holder.getAdapterPosition());
+            } else {
+                // Expand the clicked card and collapse the previously expanded card
+                int previousExpandedPosition = expandedPosition;
+                expandedPosition = holder.getAdapterPosition();
+                notifyItemChanged(previousExpandedPosition);
+                notifyItemChanged(expandedPosition);
+            }
+        });
+
+        // Show or hide additional information based on the expanded position
+        if (expandedPosition == position) {
+            holder.descriptionRow.setVisibility(View.VISIBLE);
+            holder.priorityRow.setVisibility(View.VISIBLE);
+            holder.dueDateRow.setVisibility(View.VISIBLE);
+            holder.progressRow.setVisibility(View.VISIBLE);
+            holder.expandCollapseButton.setVisibility(View.GONE); // Hide the button after expanding
+            holder.editButton.setVisibility(View.VISIBLE); // Show the edit button after expanding
+        } else {
+            holder.descriptionRow.setVisibility(View.GONE);
+            holder.priorityRow.setVisibility(View.GONE);
+            holder.dueDateRow.setVisibility(View.GONE);
+            holder.progressRow.setVisibility(View.GONE);
+            holder.expandCollapseButton.setVisibility(View.VISIBLE); // Show the button if not expanded
+            holder.editButton.setVisibility(View.GONE); // Hide the edit button if not expanded
+        }
+
+        // Edit button click listener
         holder.editButton.setOnClickListener(v -> showEditDialog(holder.itemView.getContext(), task));
     }
 
@@ -141,7 +177,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         dialog.show();
     }
 
-
     private int getStatusPosition(String status) {
         switch (status) {
             case "todo":
@@ -189,17 +224,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
-        TextView title, description, status, priority, dueDate, progress;
-        Button editButton;
+        TextView title, status, description, priority, dueDate, progress;
+        TableRow descriptionRow, priorityRow, dueDateRow, progressRow;
+        Button expandCollapseButton, editButton;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.task_title);
-            description = itemView.findViewById(R.id.task_description);
             status = itemView.findViewById(R.id.task_status);
+            description = itemView.findViewById(R.id.task_description);
             priority = itemView.findViewById(R.id.task_priority);
             dueDate = itemView.findViewById(R.id.task_due_date);
             progress = itemView.findViewById(R.id.task_progress);
+            descriptionRow = itemView.findViewById(R.id.row_task_description);
+            priorityRow = itemView.findViewById(R.id.row_task_priority);
+            dueDateRow = itemView.findViewById(R.id.row_task_due_date);
+            progressRow = itemView.findViewById(R.id.row_task_progress);
+            expandCollapseButton = itemView.findViewById(R.id.button_expand_collapse);
             editButton = itemView.findViewById(R.id.button_edit_task);
         }
     }

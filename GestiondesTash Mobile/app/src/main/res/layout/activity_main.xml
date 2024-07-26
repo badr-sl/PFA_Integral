@@ -22,20 +22,24 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="Task Management"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/primaryDarck"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Task Management"
+            app:titleTextColor="@color/white">
 
             <ImageView
                 android:id="@+id/icon_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_home"
                 android:layout_gravity="end"
-                android:padding="8dp"
-                android:contentDescription="@string/profile_icon" />
+                android:background="@drawable/baseline_account"
+                android:contentDescription="@string/profile_icon"
+                android:padding="18dp"
+                tools:layout_editor_absoluteX="371dp"
+                tools:layout_editor_absoluteY="12dp" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -23,28 +23,6 @@
             android:textStyle="bold" />
     </TableRow>
 
-    <!-- Divider Line -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/strokeColor"
-        android:layout_marginVertical="8dp" />
-
-    <!-- Table Row for Task Description -->
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:paddingEnd="8dp" />
-        <TextView
-            android:id="@+id/task_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </TableRow>
-
     <!-- Table Row for Task Status -->
     <TableRow
         android:layout_width="match_parent"
@@ -60,10 +38,35 @@
             android:layout_height="wrap_content" />
     </TableRow>
 
-    <!-- Table Row for Task Priority -->
+    <!-- Expand/Collapse Button -->
+    <Button
+        android:id="@+id/button_expand_collapse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More Info" />
+
+    <!-- Additional Task Details -->
     <TableRow
+        android:id="@+id/row_task_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:paddingEnd="8dp" />
+        <TextView
+            android:id="@+id/task_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/row_task_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,10 +78,11 @@
             android:layout_height="wrap_content" />
     </TableRow>
 
-    <!-- Table Row for Task Due Date -->
     <TableRow
+        android:id="@+id/row_task_due_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,10 +94,11 @@
             android:layout_height="wrap_content" />
     </TableRow>
 
-    <!-- Table Row for Task Progress -->
     <TableRow
+        android:id="@+id/row_task_progress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,16 +109,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </TableRow>
+    <Button
+        android:id="@+id/button_edit_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:visibility="gone" />
 
-    <!-- Edit Button -->
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/button_edit_task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit" />
-    </TableRow>
 </TableLayout>
