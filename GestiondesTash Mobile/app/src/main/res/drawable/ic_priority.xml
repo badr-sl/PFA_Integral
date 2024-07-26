@@ -1,4 +1,4 @@
-<!-- res/drawable/ic_home.xml -->
+<!-- res/drawable/ic_priority.xml -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -6,5 +6,5 @@
     android:viewportHeight="24">
     <path
         android:fillColor="#000000"
-        android:pathData="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        android:pathData="M12 2L3 22h18L12 2zm0 3.84L18.17 20H5.83L12 5.84zM11 9h2v6h-2zm0 8h2v2h-2z"/>
 </vector>

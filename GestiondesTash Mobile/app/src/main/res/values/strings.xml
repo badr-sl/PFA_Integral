@@ -20,6 +20,8 @@
     <string name="tasks">Tasks</string>
     <string name="profile_image" />
     <string name="profile_icon">Profil</string>
+    <string name="navigation_drawer_close" />
+    <string name="navigation_drawer_open" />
     <string-array name="task_status_array">
         <item>todo</item>
         <item>in-progress</item>

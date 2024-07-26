@@ -1,6 +1,5 @@
 package com.example.gestiondestash;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.gestiondestash.models.LoginRequest;
 import com.example.gestiondestash.models.LoginResponse;
-import com.example.gestiondestash.models.RegisterResponse;
 import com.example.gestiondestash.models.User;
 
 import org.json.JSONException;

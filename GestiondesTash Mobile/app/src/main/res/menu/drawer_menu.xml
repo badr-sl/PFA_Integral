@@ -8,18 +8,11 @@
         android:title="Tasks"
         android:icon="@drawable/ic_tasks" />
     <item
-        android:id="@+id/nav_profile"
-        android:title="Profile"
-        android:icon="@drawable/ic_home">
-        <menu>
-            <item
-                android:id="@+id/nav_profile_details"
-                android:title="Profile Details"
-                android:icon="@drawable/ic_home" />
-            <item
-                android:id="@+id/nav_logout"
-                android:title="Logout"
-                android:icon="@drawable/ic_home" />
-        </menu>
-    </item>
+        android:id="@+id/nav_profile_details"
+        android:title="Profile Details"
+        android:icon="@drawable/ic_profile" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout"
+        android:icon="@drawable/ic_logout" />
 </menu>

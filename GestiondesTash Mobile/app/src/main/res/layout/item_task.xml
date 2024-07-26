@@ -10,6 +10,11 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_title"
+            android:paddingEnd="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +32,11 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_status"
+            android:paddingEnd="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +53,10 @@
         android:id="@+id/button_expand_collapse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More Info" />
+        android:text="More Info"
+        android:backgroundTint="@color/primaryDarck"
+        android:textColor="@android:color/white" />
+
 
     <!-- Additional Task Details -->
     <TableRow
@@ -51,6 +64,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_description"
+            android:paddingEnd="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,6 +85,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_priority"
+            android:paddingEnd="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,6 +106,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_due_date"
+            android:paddingEnd="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,6 +127,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_progress"
+            android:paddingEnd="8dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,11 +142,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </TableRow>
+
     <Button
         android:id="@+id/button_edit_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:backgroundTint="@color/primaryDarck"
+        android:textColor="@android:color/white"/>
 
 </TableLayout>

@@ -42,7 +42,6 @@ class AuthController extends Controller
             // Log the error
             \Log::error('Registration error: ' . $e->getMessage());
 
-            // Return a meaningful error response
             return response()->json([
                 'message' => 'Registration failed',
                 'error' => $e->getMessage(),

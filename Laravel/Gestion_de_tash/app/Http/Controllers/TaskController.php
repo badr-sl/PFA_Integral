@@ -33,7 +33,6 @@ class TaskController extends Controller
             'progress' => 'nullable|integer|min:0|max:100',
         ]);
 
-        // Créer une nouvelle tâche
         $task = Task::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -44,7 +43,6 @@ class TaskController extends Controller
 
         ]);
 
-        // Retourner la ressource de la tâche créée en JSON
         return new TaskResource($task);
     }
 
@@ -72,11 +70,9 @@ class TaskController extends Controller
             'progress' => 'nullable|integer|min:0|max:100',
         ]);
 
-        // Récupérer la tâche avec les assignations
         $assignment = Task::findOrFail($id);
 
 
-        // Mettre à jour les données de la tâche
         $assignment ->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -86,7 +82,6 @@ class TaskController extends Controller
             'progress' => $request->progress?? 0,
         ]);
 
-        // Retourner la ressource de la tâche mise à jour en JSON
         return new TaskResource($assignment );
     }
 
@@ -99,7 +94,6 @@ class TaskController extends Controller
         $assignment->delete();
 
 
-        // Retourner une réponse JSON indiquant la suppression réussie
         return response()->json(['message' => 'Task deleted'], 200);
     }
 
@@ -108,16 +102,12 @@ class TaskController extends Controller
      */
     public function getUserTasks($userId)
 {
-    // Récupérer l'utilisateur avec ses tâches assignées
     $user = User::with('assignedTasks.task')->findOrFail($userId);
 
-    // Extraire les tâches depuis les assignations
     $tasks = $user->assignedTasks->pluck('task');
 
-    // Trier les tâches par priorité en ordre décroissant
     $sortedTasks = $tasks->sortByDesc('priority');
 
-    // Retourner les tâches sous forme de collection de ressources
     return TaskResource::collection($sortedTasks);
 }
 

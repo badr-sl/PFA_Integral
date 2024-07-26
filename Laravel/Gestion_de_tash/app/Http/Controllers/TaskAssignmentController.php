@@ -25,13 +25,10 @@ class TaskAssignmentController extends Controller
      */
     public function getUserTasks($userId)
     {
-        // Retrieve the user with their assigned tasks
         $user = User::with('assignedTasks.task')->findOrFail($userId);
 
-        // Extract tasks from assignments and sort by priority in descending order
         $tasks = $user->assignedTasks->pluck('task')->sortByDesc('priority');
 
-        // Return tasks as a collection of resources
         return TaskResource::collection($tasks);
     }
 
