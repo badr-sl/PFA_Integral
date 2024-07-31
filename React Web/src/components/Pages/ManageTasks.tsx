@@ -35,6 +35,8 @@ const ManageTasks: React.FC = () => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
 
   useEffect(() => {
     if (!token) {
@@ -111,13 +113,23 @@ const ManageTasks: React.FC = () => {
   const handleAssignSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (assignTaskId !== null && selectedUserId !== null) {
-      await dispatch(assignTaskToUser({ task_id: assignTaskId, user_id: selectedUserId }));
+      try {
+        const response = await dispatch(assignTaskToUser({ task_id: assignTaskId, user_id: selectedUserId }));
+        if (response.meta.requestStatus === 'fulfilled') {
+          setShowAssignModal(false); 
+          setShowSuccessModal(true); 
+          
+          setTimeout(() => {
+            setShowSuccessModal(false);
+          }, 2500);
+        } 
+      } catch (error) {
+        // Gérez les erreurs si nécessaire
+      }
     }
-    setShowAssignModal(false);
-    setAssignTaskId(null);
-    setSelectedUserId(null);
-    dispatch(fetchAllTasks());
   };
+  
+  
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -281,6 +293,23 @@ const ManageTasks: React.FC = () => {
           </div>
         </div>
       )}
+        {/* Modal for success message after assignment */}
+{showSuccessModal && (
+  <div className="modal show d-block" tabIndex={-1}>
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Success</h5>
+          
+        </div>
+        <div className="modal-body">
+          <p>Task assigned successfully and email sent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Modal for showing task details */}
       {showDetailsModal && selectedTask && (
