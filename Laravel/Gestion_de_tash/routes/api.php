@@ -1,10 +1,14 @@
 <?php
 
+use App\Models\Task;
+use App\Models\User;
+use App\Mail\TaskAssigned;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\TaskAssignmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskAssignmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes accessibles par l'administrateur (admin)
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
-        Route::get('/find/{id}', [UserController::class, 'show']);
         Route::get('/tasks', [TaskController::class, 'index']);
         Route::post('/tasks', [TaskController::class, 'store']);
         Route::get('/tasks/{id}', [TaskController::class, 'show']);
@@ -51,9 +54,13 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Routes communes pour tous les utilisateurs authentifiés
+    Route::get('/find/{id}', [UserController::class, 'show']);
     Route::post('/task-assignments', [TaskAssignmentController::class, 'store']);
     Route::put('/tasks/{id}', [TaskController::class, 'update']);
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::get('/user/{userId}/tasks', [TaskAssignmentController::class, 'getUserTasks']);
+
+   
+
 
 });

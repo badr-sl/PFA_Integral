@@ -20,9 +20,8 @@ public class ProfileFragment extends Fragment {
     private TextView profileName;
     private TextView profileEmail;
     private TextView profilePhone;
-    private TextView profileAddress;
-    private TextView profileMoreDetails;
     private Button buttonEditProfile;
+    private ImageView backIcon;
 
     @Nullable
     @Override
@@ -39,11 +38,9 @@ public class ProfileFragment extends Fragment {
         profileName = view.findViewById(R.id.profile_name);
         profileEmail = view.findViewById(R.id.profile_email);
         profilePhone = view.findViewById(R.id.profile_phone);
-        profileAddress = view.findViewById(R.id.profile_address);
-        profileMoreDetails = view.findViewById(R.id.profile_more_details);
         buttonEditProfile = view.findViewById(R.id.button_edit_profile);
+        backIcon = view.findViewById(R.id.back_icon);
 
-        // Load user data from SharedPreferences
         loadUserProfile();
 
         buttonEditProfile.setOnClickListener(v -> {
@@ -56,6 +53,17 @@ public class ProfileFragment extends Fragment {
                         .commit();
             }
         });
+
+        backIcon.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                } else {
+                    getActivity().onBackPressed();
+                }
+            }
+        });
+
     }
 
     private void loadUserProfile() {
@@ -64,15 +72,11 @@ public class ProfileFragment extends Fragment {
         String name = sharedPreferences.getString("user_name", "Unknown");
         String email = sharedPreferences.getString("user_email", "Unknown");
         String phone = sharedPreferences.getString("user_phone", "Unknown");
-        String address = sharedPreferences.getString("user_address", "Unknown");
-        String moreDetails = sharedPreferences.getString("user_more_details", "No details available");
         String profileImageUrl = sharedPreferences.getString("user_profile_image_url", "");
 
         profileName.setText(name);
         profileEmail.setText(email);
         profilePhone.setText(phone);
-        profileAddress.setText(address);
-        profileMoreDetails.setText(moreDetails);
 
         if (!profileImageUrl.isEmpty()) {
             Glide.with(this)

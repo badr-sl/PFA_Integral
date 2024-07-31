@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.gestiondestash.models.HomeFragment;
+import com.example.gestiondestash.models.ProfileFragment;
 import com.example.gestiondestash.models.TasksFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (itemId == R.id.nav_tasks) {
             fragment = new TasksFragment();
         } else if (itemId == R.id.nav_profile_details) {
-            Toast.makeText(this, "Profile Details clicked", Toast.LENGTH_SHORT).show();
+            fragment = new ProfileFragment();
         } else if (itemId == R.id.nav_logout) {
             logout();
         }

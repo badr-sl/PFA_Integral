@@ -182,7 +182,7 @@ const ManageTasks: React.FC = () => {
                           <td>{task.title}</td>
                           <td>{task.description}</td>
                           <td>
-                            <span style={{width:"100px",position:"relative",left:"4px"}} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
+                            <span style={{width:"100px",position:"relative",left:"1%"}} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
                               {task.status}
                             </span>
                           </td>

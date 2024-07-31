@@ -11,6 +11,7 @@ import com.example.gestiondestash.models.TaskRequest;
 import com.example.gestiondestash.models.TaskResponse;
 import com.example.gestiondestash.models.TaskResponseContainer;
 import com.example.gestiondestash.models.TaskStatusRequest;
+import com.example.gestiondestash.models.User;
 import com.example.gestiondestash.models.UserResponse;
 
 import java.util.List;
@@ -69,6 +70,8 @@ public interface ApiService {
 
     @GET("user/tasks")
     Call<List<TaskResponse>> getUserTasks();
+    @GET("/find/{id}")
+    Call<List<User>>getUser(@Path("id") int UserId) ;
 
     @PUT("user/tasks/{id}")
     Call<TaskResponse> updateUserTaskStatus(@Path("id") int taskId, @Body TaskStatusRequest taskStatusRequest);

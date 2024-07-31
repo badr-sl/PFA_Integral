@@ -14,5 +14,10 @@
     <color name="colorToDo">#B0BEC5</color> <!-- Grey -->
     <color name="colorInProgress">#FFEB3B</color> <!-- Yellow -->
     <color name="colorCompleted">#4CAF50</color> <!-- Green -->
+    <color name="backgroundColor">#F5F5F5</color>
+    <color name="primaryColor">#3498DB</color>
+
+
+
 
 </resources>
