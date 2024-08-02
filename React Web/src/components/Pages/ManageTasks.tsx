@@ -75,7 +75,7 @@ const ManageTasks: React.FC = () => {
     setShowModal(false);
     setEditTaskId(null);
     setNewTask({ title: '', description: '', status: 'todo', priority: '', due_date: '', progress: 0 });
-    dispatch(fetchAllTasks()); // Actualiser le tableau après l'ajout
+    dispatch(fetchAllTasks()); 
   };
 
   const handleEdit = (task: any) => {
@@ -124,7 +124,7 @@ const ManageTasks: React.FC = () => {
           }, 2500);
         } 
       } catch (error) {
-        // Gérez les erreurs si nécessaire
+        
       }
     }
   };

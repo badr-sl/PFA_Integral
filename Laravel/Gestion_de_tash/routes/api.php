@@ -40,12 +40,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
         // ----------------------------------------------------------------
         Route::post('/user', [UserController::class, 'store']);
-
         Route::post('/user', [UserController::class, 'store']);
         Route::get('/task-assignments', [TaskAssignmentController::class, 'index']);
         Route::get('/task-assignments/{id}', [TaskAssignmentController::class, 'show']);
         Route::put('/task-assignments/{id}', [TaskAssignmentController::class, 'update']);
         Route::delete('/task-assignments/{id}', [TaskAssignmentController::class, 'destroy']);
+
     });
 
     // Routes accessibles par l'utilisateur (user)
@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::get('/user/{userId}/tasks', [TaskAssignmentController::class, 'getUserTasks']);
 
-   
+
 
 
 });

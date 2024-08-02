@@ -24,6 +24,7 @@ class TaskResource extends JsonResource
             'progress' => $this->progress,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'assigned_task_id' => $this->assigned_task_id,
 
 
         ];

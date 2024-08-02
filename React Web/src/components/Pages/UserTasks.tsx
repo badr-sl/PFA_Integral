@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { fetchUserTasks } from '../../features/tasks/tasksSlice';
-import { fetchAllUsers } from '../../features/User/usersSlice';
+import { fetchAllUsers, deleteTaskAssignment } from '../../features/User/usersSlice';
 import Navbar from '../Common/Navbar';
 import AdminSidebar from '../Common/AdminSidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UserTasks: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +55,16 @@ const UserTasks: React.FC = () => {
     }, 100);
   };
 
+  const handleDelete = async (id: number) => {
+    const result = await dispatch(deleteTaskAssignment(id));
+    if (result.meta.requestStatus === 'fulfilled') {
+      // Update the list of tasks after deletion
+      dispatch(fetchUserTasks(selectedUserId!));
+    } else {
+      console.error(`Failed to delete task with id ${id}.`);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -95,6 +107,7 @@ const UserTasks: React.FC = () => {
                             <th scope="col">Priority</th>
                             <th scope="col">Due Date</th>
                             <th scope="col">Progress</th>
+                            <th scope="col">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -110,6 +123,9 @@ const UserTasks: React.FC = () => {
                               <td>{task.priority}</td>
                               <td>{task.due_date}</td>
                               <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
+                              <td>
+                              <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.assigned_task_id)}><FontAwesomeIcon icon={faTrashCan} className="me-2" />Delete</button>
+                              </td>
                             </tr>
                           ))}
                         </tbody>

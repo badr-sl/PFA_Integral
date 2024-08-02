@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction, AsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../app/store';
 
@@ -110,19 +110,35 @@ export const assignTaskToUser = createAsyncThunk<void, AssignTaskPayload, {}>(
   }
 );
 
-// Explicitly typing the logout thunk
-export const logout: AsyncThunk<null, void, {}> = createAsyncThunk('users/logout', async (_, { getState }) => {
-  const state = getState() as RootState;
-  const token = state.auth.token;
+export const deleteTaskAssignment = createAsyncThunk<void, number, {}>(
+  'users/deleteTaskAssignment',
+  async (id, { getState }) => {
+    const state = getState() as RootState;
+    const token = state.auth.token;
 
-  await axios.post('http://localhost:8000/api/logout', {}, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    await axios.delete(`http://localhost:8000/api/task-assignments/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+);
 
-  return null;
-});
+export const logout = createAsyncThunk<null, void, {}>(
+  'users/logout',
+  async (_, { getState }) => {
+    const state = getState() as RootState;
+    const token = state.auth.token;
+
+    await axios.post('http://localhost:8000/api/logout', {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return null;
+  }
+);
 
 const usersSlice = createSlice({
   name: 'users',

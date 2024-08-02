@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskResource;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendTaskAssignedEmail;
 
 class TaskAssignmentController extends Controller
 {
@@ -30,10 +31,15 @@ class TaskAssignmentController extends Controller
     {
         $user = User::with('assignedTasks.task')->findOrFail($userId);
 
-        $tasks = $user->assignedTasks->pluck('task')->sortByDesc('priority');
+        $tasks = $user->assignedTasks->map(function($assignedTask) {
+            $task = $assignedTask->task;
+            $task->assigned_task_id = $assignedTask->id;
+            return $task;
+        })->sortByDesc('priority');
 
         return TaskResource::collection($tasks);
     }
+
 
 
     /**
@@ -58,8 +64,8 @@ class TaskAssignmentController extends Controller
         $user = User::find($request->user_id);
         $task = Task::find($request->task_id);
 
-        // Envoyer l'email d'assignation
-        Mail::to($user->email)->send(new TaskAssigned($task, $user));
+        // Envoyer l'email d'assignation de manière asynchrone
+        SendTaskAssignedEmail::dispatch($task, $user);
 
         // Retourner une réponse JSON avec un message de succès
         return response()->json([

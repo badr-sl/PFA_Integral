@@ -21,7 +21,7 @@ class TaskAssignmentResource extends JsonResource
             'assigned_at' => $this->assigned_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            // Ajouter d'autres attributs si nécessaire
+            'assigned_task_id' => $this->assigned_task_id,
         ];
     }
 }
