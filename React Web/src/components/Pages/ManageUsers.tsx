@@ -8,7 +8,10 @@ import { FaUserPlus } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
+
 
 const ManageUsers: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -87,6 +90,36 @@ const ManageUsers: React.FC = () => {
     const matchesRole = roleFilter ? user.role === roleFilter : true;
     return matchesSearch && matchesRole;
   });
+  const handleDownloadCSV = () => {
+    const csvData = users.map(user => ({
+      Name:user.name,
+      Email: user.email,
+      PhoneNumber: user.PhoneNumber,
+      Role: user.role,
+    }));
+    
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', 'Users.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  const handleDownloadExcel = () => {
+    const excelData = users.map(user => ({
+      Name:user.name,
+      Email: user.email,
+      PhoneNumber: user.PhoneNumber,
+      Role: user.role,
+    }));
+    
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
+    XLSX.writeFile(workbook, 'Users.xlsx');
+  };
 
   return (
     <div>
@@ -97,6 +130,19 @@ const ManageUsers: React.FC = () => {
           <div className="card shadow-sm">
             <div className="card-body">
               <h2 className="card-title mb-4">Manage Users :</h2>
+              <div className="dropdown mb-3 d-flex ">
+                  <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <FontAwesomeIcon icon={faDownload} /> Download
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
+                    </li>
+                  </ul>
+                </div>
               <div className="d-flex justify-content-between mb-3">
                 <input
                   type="text"
@@ -116,6 +162,7 @@ const ManageUsers: React.FC = () => {
                 </select>
               </div>
               <button className="btn btn-primary mb-3" onClick={handleAddUser}><FaUserPlus style={{ position: "relative", bottom: "2px" }} /> Add User</button>
+
               {loading ? <div className="alert alert-info">Loading...</div> : error ? <div className="alert alert-danger">{error}</div> : (
                 <div className="table-responsive">
                   <table className="table table-hover table-bordered table-striped">
@@ -136,7 +183,7 @@ const ManageUsers: React.FC = () => {
                           <td>{user.PhoneNumber}</td>
                           <td>{user.role}</td>
                           <td className="d-flex align-items-center justify-content-evenly">
-                            <button className="btn btn-warning btn-sm me-2 d-flex justify-content-center" style={{ width: "100px" }} onClick={() => handleEdit(user)}><FontAwesomeIcon icon={faUserPen} style={{ position: "relative", right: "10%", top: "2px" }} /> Edit</button>
+                            <button className="btn btn-warning btn-sm me-2 d-flex justify-content-center" style={{ width: "100px",position: "relative", right: "50px" }} onClick={() => handleEdit(user)}><FontAwesomeIcon icon={faUserPen} style={{ position: "relative", right: "10%", top: "2px" }} /> Edit</button>
                           </td>
                         </tr>
                       ))}

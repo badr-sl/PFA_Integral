@@ -9,8 +9,10 @@ import AdminSidebar from '../Common/AdminSidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrashCan, faUserCheck, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrashCan, faUserCheck, faCircleInfo, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FaPlus } from 'react-icons/fa';
+import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
 
 const ManageTasks: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +38,6 @@ const ManageTasks: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
 
   useEffect(() => {
     if (!token) {
@@ -124,19 +125,52 @@ const ManageTasks: React.FC = () => {
           }, 2500);
         } 
       } catch (error) {
-        
+        console.error('Failed to assign task:', error);
       }
     }
   };
   
-  
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusFilter(e.target.value);
+  };
+
+  const handleDownloadCSV = () => {
+    const csvData = tasks.map(task => ({
+      Title: task.title,
+      Description: task.description,
+      Status: task.status,
+      Priority: task.priority,
+      Progress: task.progress,
+      Due_Date: task.due_date,
+    }));
+    
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', 'tasks.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  const handleDownloadExcel = () => {
+    const excelData = tasks.map(task => ({
+      Title: task.title,
+      Description: task.description,
+      Status: task.status,
+      Priority: task.priority,
+      Progress: task.progress,
+      Due_Date: task.due_date,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Tasks');
+    XLSX.writeFile(workbook, 'tasks.xlsx');
   };
 
   const filteredTasks = tasks.filter((task) => {
@@ -154,6 +188,19 @@ const ManageTasks: React.FC = () => {
           <div className="card shadow-sm">
             <div className="card-body">
               <h2 className="card-title mb-4">Manage Tasks :</h2>
+              <div className="dropdown mb-3 d-flex ">
+                  <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <FontAwesomeIcon icon={faDownload} /> Download
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
+                    </li>
+                  </ul>
+                </div>
               <div className="d-flex justify-content-between mb-3">
                 <input
                   type="text"
@@ -202,10 +249,16 @@ const ManageTasks: React.FC = () => {
                           <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
                           <td>{task.due_date}</td>
                           <td className="d-flex">
-                            <button className="btn btn-warning btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleEdit(task)}><FontAwesomeIcon icon={faPenToSquare} className="me-1" />Edit</button>
-                            <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.id)}><FontAwesomeIcon icon={faTrashCan} className="me-2" />Delete</button>
-                            <button className="btn btn-info btn-sm d-flex align-items-center justify-content-evenly" onClick={() => handleAssign(task)}><FontAwesomeIcon icon={faUserCheck} className="me-2" />Assign</button>
-                            <button className="icon-button" onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
+                            <button className="btn btn-warning btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleEdit(task)}>
+                              <FontAwesomeIcon icon={faPenToSquare} /> Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.id)}>
+                              <FontAwesomeIcon icon={faTrashCan} /> Delete
+                            </button>
+                            <button className="btn btn-primary btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleAssign(task)}>
+                              <FontAwesomeIcon icon={faUserCheck} /> Assign
+                            </button>
+                            <button className="icon-button"style={{position:"relative",right:"20px"}} onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
                           </td>
                         </tr>
                       ))}
@@ -213,7 +266,6 @@ const ManageTasks: React.FC = () => {
                   </table>
                 </div>
               )}
-              {!loading && !error && Array.isArray(tasks) && tasks.length === 0 && <div className="alert alert-warning">No tasks found.</div>}
             </div>
           </div>
         </div>
