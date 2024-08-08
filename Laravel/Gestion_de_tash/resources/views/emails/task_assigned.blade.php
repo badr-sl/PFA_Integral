@@ -44,11 +44,11 @@
             </ul>
             <p>Please ensure that you complete this task by the due date. If you have any questions or need further clarification, feel free to reach out.</p>
             <p>Best regards,</p>
-            <p><strong>{{ config('app.name') }} Team</strong></p>
+            <p><strong> Pedro_App Team</strong></p>
         </div>
         <div class="footer">
             <p>This is an automated message, please do not reply directly to this email.</p>
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Pedro_App . All rights reserved.</p>
         </div>
     </div>
 </body>

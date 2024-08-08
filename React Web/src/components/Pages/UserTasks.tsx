@@ -53,8 +53,8 @@ const UserTasks: React.FC = () => {
   };
 
   const applyFilters = () => {
-    setFilteredTasks([]); // Clear the table
-    setTimeout(() => { // Ensure the table is cleared before applying the filter
+    setFilteredTasks([]); 
+    setTimeout(() => { 
       let tempTasks = tasks;
       if (statusFilter) {
         tempTasks = tempTasks.filter(task => task.status === statusFilter);

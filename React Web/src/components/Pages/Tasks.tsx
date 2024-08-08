@@ -57,11 +57,20 @@ const Tasks: React.FC = () => {
 
   const handleSaveChanges = async () => {
     if (selectedTask) {
-      await dispatch(updateTask(selectedTask));
-      handleCloseModal();
-      dispatch(fetchUserTasks(user.id)); 
+        
+        let updatedTask = { ...selectedTask };
+        if (selectedTask.status === 'todo') {
+            updatedTask.progress = 0;
+        } else if (selectedTask.status === 'completed') {
+            updatedTask.progress = 100;
+        }
+
+        await dispatch(updateTask(updatedTask));
+        handleCloseModal();
+        dispatch(fetchUserTasks(user.id)); 
     }
-  };
+};
+
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -144,7 +153,7 @@ const Tasks: React.FC = () => {
                               <td>{task.priority}</td>
                               <td>{task.due_date}</td>
                               <td>
-                                {task.status === 'in-progress' ? `${task.progress}%` : task.status === 'completed' ? '100%' : '0%'}
+                              {task.status === 'in-progress' ? `${task.progress}%` : task.status === 'completed' ? '100%' : '0%'}
                               </td>
                               <td>
                                 <button className="btn btn-info btn-sm" onClick={() => handleShowDetails(task)}>Info</button>
