@@ -14,7 +14,10 @@ import * as XLSX from 'xlsx';
 
 const UserTasks: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
+  const { tasks, error } = useSelector((state: RootState) => ({
+    ...state.tasks,
+    tasks: state.tasks.tasks || []
+  }));
   const { users } = useSelector((state: RootState) => state.users);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -43,6 +46,7 @@ const UserTasks: React.FC = () => {
       dispatch(fetchUserTasks(userId));
     }
   };
+
   const handleShowDetails = (task: any) => {
     setSelectedTask(task);
     setShowDetailsModal(true);
@@ -53,25 +57,22 @@ const UserTasks: React.FC = () => {
   };
 
   const applyFilters = () => {
-    setFilteredTasks([]); 
-    setTimeout(() => { 
-      let tempTasks = tasks;
-      if (statusFilter) {
-        tempTasks = tempTasks.filter(task => task.status === statusFilter);
-      }
-      setFilteredTasks(tempTasks);
-    }, 100);
+    let tempTasks = tasks;
+    if (statusFilter) {
+      tempTasks = tempTasks.filter(task => task.status === statusFilter);
+    }
+    setFilteredTasks(tempTasks);
   };
 
   const handleDelete = async (id: number) => {
     const result = await dispatch(deleteTaskAssignment(id));
     if (result.meta.requestStatus === 'fulfilled') {
-      // Update the list of tasks after deletion
       dispatch(fetchUserTasks(selectedUserId!));
     } else {
       console.error(`Failed to delete task with id ${id}.`);
     }
   };
+
   const handleDownloadCSV = () => {
     const csvData = tasks.map(task => ({
       Title: task.title,
@@ -91,6 +92,7 @@ const UserTasks: React.FC = () => {
     link.click();
     document.body.removeChild(link);
   };
+
   const handleDownloadExcel = () => {
     const excelData = tasks.map(task => ({
       Title: task.title,
@@ -113,22 +115,22 @@ const UserTasks: React.FC = () => {
       <div className="d-flex">
         <AdminSidebar />
         <div className="container mt-5 main-content">
-          <div className="card shadow-sm">
+          <div className="card shadow-sm" style={{position: "relative",right: "-5px",width: "1356px"}}>
             <div className="card-body">
               <h2 className="card-title mb-4">User Tasks :</h2>
               <div className="dropdown mb-3 d-flex ">
-                  <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                   <FontAwesomeIcon icon={faDownload} /> Download
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li>
-                      <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
-                    </li>
-                    <li>
-                      <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
-                    </li>
-                  </ul>
-                </div>
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
+                  </li>
+                </ul>
+              </div>
               <div className="mb-4">
                 <label htmlFor="userSelect" className="form-label">Select User:</label>
                 <select id="userSelect" className="form-select" onChange={handleUserChange} value={selectedUserId || ''}>
@@ -147,58 +149,52 @@ const UserTasks: React.FC = () => {
                   <option value="completed">Completed</option>
                 </select>
               </div>
-              {loading ? <div className="alert alert-info">Loading...</div> : error ? <div className="alert alert-danger">{error}</div> : (
-                <>
-                  {filteredTasks.length === 0 ? (
-                    <div>No tasks found.</div>
-                  ) : (
-                    <div className="table-responsive">
-                      <table className="table table-hover table-bordered table-striped">
-                        <thead className="thead-light">
-                          <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Priority</th>
-                            <th scope="col">Due Date</th>
-                            <th scope="col">Progress</th>
-                            <th scope="col">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredTasks.map(task => (
-                            <tr key={task.id}>
-                              <td>{task.title}</td>
-                              <td>{task.description}</td>
-                              <td>
-                                <span style={{ width: "85px", position: "relative", left: "9px" }} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
-                                  {task.status}
-                                </span>
-                              </td>
-                              <td>{task.priority}</td>
-                              <td>{task.due_date}</td>
-                              <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
-                              <td>
-                                <div className='d-flex'>
-                                <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly"style={{position:"relative",left:"25px"}} onClick={() => handleDelete(task.assigned_task_id)}><FontAwesomeIcon icon={faTrashCan} className="me-2" />Delete</button>
-                                <button className="icon-button d-flex align-items-center "style={{position:"relative",right:"25px"}} onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
-
-                                </div>
-                              
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </>
+              {error && <div className="alert alert-danger">{error}</div>}
+              {filteredTasks.length === 0 ? (
+                <div>No tasks found.</div>
+              ) : (
+                <div className="table-responsive">
+                  <table className="table table-hover table-bordered table-striped">
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Progress</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredTasks.map(task => (
+                        <tr key={task.id}>
+                          <td>{task.title}</td>
+                          <td>{task.description}</td>
+                          <td>
+                            <span style={{ width: "85px", position: "relative", left: "9px" }} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
+                              {task.status}
+                            </span>
+                          </td>
+                          <td>{task.priority}</td>
+                          <td>{task.due_date}</td>
+                          <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
+                          <td>
+                            <div className='d-flex'>
+                              <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" style={{position:"relative",left:"25px"}} onClick={() => handleDelete(task.assigned_task_id)}><FontAwesomeIcon icon={faTrashCan} className="me-2" />Delete</button>
+                              <button className="icon-button d-flex align-items-center" style={{position:"relative",right:"25px"}} onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           </div>
         </div>
       </div>
-      {/* Modal for showing task details */}
       {showDetailsModal && selectedTask && (
         <div className="modal show d-block" tabIndex={-1}>
           <div className="modal-dialog">

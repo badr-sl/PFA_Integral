@@ -100,7 +100,7 @@ const Tasks: React.FC = () => {
       <div className='d-flex'>
         <UserSidebar />
         <div className="container mt-5 main-content">
-          <div className="card shadow-sm">
+          <div className="card shadow-sm" style={{position: "relative",right: "-26px",width: "1328px",}}>
             <div className="card-body">
               <h2 className="card-title mb-4">User Tasks</h2>
               <div className="d-flex justify-content-between mb-3">

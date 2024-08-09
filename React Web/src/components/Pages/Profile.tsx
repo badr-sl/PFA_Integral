@@ -50,6 +50,7 @@ const Profile: React.FC = () => {
 
   return (
     <Container className="profile-container mt-5">
+      
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
           <Card className="profile-card">

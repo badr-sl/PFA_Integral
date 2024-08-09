@@ -53,7 +53,6 @@ const AdminHome: React.FC = () => {
   const token = localStorage.getItem('token');
   const [taskAssignments, setTaskAssignments] = useState<TaskAssignment[]>([]);
   const [userTasks, setUserTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [users, setUsers] = useState<User[]>([]);
@@ -62,12 +61,10 @@ const AdminHome: React.FC = () => {
     const fetchData = async () => {
       if (!token) {
         setError("Pas de token d'authentification");
-        setLoading(false);
         return;
       }
 
       try {
-        setLoading(true);
         const taskAssignmentsResponse = await axios.get('http://localhost:8000/api/task-assignments', {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -80,8 +77,6 @@ const AdminHome: React.FC = () => {
       } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
         setError('Erreur lors du chargement des données');
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -92,23 +87,15 @@ const AdminHome: React.FC = () => {
     const fetchUserTasks = async () => {
       if (selectedUserId !== null) {
         try {
-          setLoading(true);
           const response = await axios.get(`http://localhost:8000/api/user/${selectedUserId}/tasks`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-      
-          console.log("Full API Response:", response); 
-    
+
+          console.log("Full API Response:", response);
+
           // Accessing tasks directly from response.data.data
           if (response.data.data && Array.isArray(response.data.data)) {
-            setUserTasks(response.data.data); 
-    
-           
-            const taskProgress = response.data.data.map((task: Task) => {
-              console.log("Task Progress:", task.progress); 
-              return task.progress; 
-            });
-            console.log("User Tasks Progress:", taskProgress); 
+            setUserTasks(response.data.data);
           } else {
             setError('Les données de tâches ne sont pas au format attendu');
           }
@@ -119,22 +106,13 @@ const AdminHome: React.FC = () => {
           } else {
             setError('Erreur lors du chargement des tâches de l\'utilisateur');
           }
-        } finally {
-          setLoading(false);
         }
       }
     };
-    
-    
-    
-    
-    
-  
+
     fetchUserTasks();
   }, [selectedUserId, token]);
-  
 
-  if (loading) return <Layout role="admin"><p>Chargement...</p></Layout>;
   if (error) return <Layout role="admin"><p>{error}</p></Layout>;
   if (taskAssignments.length === 0) return <Layout role="admin"><p>Aucune donnée disponible</p></Layout>;
 
@@ -175,18 +153,17 @@ const AdminHome: React.FC = () => {
   };
 
   const userProgressChartData = {
-    labels: userTasks.map(task => `Task ${task.id}`), // Access task.id to set labels
+    labels: userTasks.map(task => `Task ${task.title}`),
     datasets: [
       {
         label: 'Task Progress',
-        data: userTasks.map(task => task.progress || 0), // Access task.progress, default to 0 if undefined
+        data: userTasks.map(task => task.progress || 0),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
     ],
   };
-  
 
   const userProgressChartOptions = {
     scales: {
@@ -215,11 +192,11 @@ const AdminHome: React.FC = () => {
   };
 
   return (
-    <Layout role="admin">
+    <Layout role="admin" >
       <h1 className="text-center mb-4">Admin Dashboard</h1>
       <p className="text-center">Welcome, {user?.name || 'Admin'}!</p>
 
-      <div className="container">
+      <div className="container" id={"adminhome"}>
         <div className="row mb-4">
           <div className="col-md-6">
             <div style={{ height: '300px' }}>
@@ -238,7 +215,7 @@ const AdminHome: React.FC = () => {
         <div className="row mb-4">
           <div className="col-12">
             <div className="form-group" style={{ marginTop: "35px" }}>
-              <label htmlFor="user-select">Select User: </label>
+              <label htmlFor="user-select" style={{fontSize:"29px"}}>Select User: </label>
               <select
                 id="user-select"
                 className="form-control"

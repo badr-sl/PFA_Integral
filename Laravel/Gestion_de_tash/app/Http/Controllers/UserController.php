@@ -32,8 +32,8 @@ class UserController extends Controller
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|unique:users,email',
-        'password' => 'required|string|min:4',
-        'PhoneNumber' => 'required|string',
+        'password' => 'required|string|min:3',
+        'phoneNumber' => 'required|string',
         'role' => 'string|in:admin,user'
     ]);
 
@@ -41,7 +41,7 @@ class UserController extends Controller
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'PhoneNumber' => $request->PhoneNumber,
+        'phoneNumber' => $request->phoneNumber,
         'role' => $request->role
     ]);
 
@@ -74,8 +74,8 @@ class UserController extends Controller
             // Validation des données entrantes
             $request->validate([
                 'name' => 'string|max:255',
-                'password' => 'string|min:8|nullable',
-                'PhoneNumber' => 'string',
+                'password' => 'string|min:3|nullable',
+                'phoneNumber' => 'string',
                 'role' => 'string|in:admin,user'
             ]);
 
@@ -91,7 +91,7 @@ class UserController extends Controller
             }
 
             if ($request->filled('PhoneNumber')) {
-                $user->PhoneNumber = $request->PhoneNumber;
+                $user->phoneNumber = $request->phoneNumber;
             }
 
             if ($request->filled('role')) {

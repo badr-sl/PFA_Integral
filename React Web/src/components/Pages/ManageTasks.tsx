@@ -17,7 +17,10 @@ import * as XLSX from 'xlsx';
 const ManageTasks: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
+  const { tasks, error } = useSelector((state: RootState) => ({
+    ...state.tasks,
+    tasks: state.tasks.tasks || []
+  }));
   const { users } = useSelector((state: RootState) => state.users);
   const token = useSelector((state: RootState) => state.auth.token);
   const [showModal, setShowModal] = useState(false);
@@ -157,6 +160,7 @@ const ManageTasks: React.FC = () => {
     link.click();
     document.body.removeChild(link);
   };
+
   const handleDownloadExcel = () => {
     const excelData = tasks.map(task => ({
       Title: task.title,
@@ -185,22 +189,22 @@ const ManageTasks: React.FC = () => {
       <div className="d-flex">
         <AdminSidebar />
         <div className="container-fluid mt-5 main-content">
-          <div className="card shadow-sm">
+          <div className="card shadow-sm" id='main-card'>
             <div className="card-body">
               <h2 className="card-title mb-4">Manage Tasks :</h2>
               <div className="dropdown mb-3 d-flex ">
-                  <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                   <FontAwesomeIcon icon={faDownload} /> Download
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li>
-                      <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
-                    </li>
-                    <li>
-                      <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
-                    </li>
-                  </ul>
-                </div>
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
+                  </li>
+                </ul>
+              </div>
               <div className="d-flex justify-content-between mb-3">
                 <input
                   type="text"
@@ -221,51 +225,50 @@ const ManageTasks: React.FC = () => {
                 </select>
               </div>
               <button className="btn btn-primary mb-3" onClick={() => { setNewTask({ title: '', description: '', status: 'todo', priority: '', due_date: '', progress: 0 }); setShowModal(true); }}><FaPlus /> Add Task</button>
-              {loading ? <div className="alert alert-info">Loading...</div> : error ? <div className="alert alert-danger">{error}</div> : (
-                <div className="table-responsive">
-                  <table className="table table-hover table-bordered table-striped">
-                    <thead className="thead-light">
-                      <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Progress</th>
-                        <th scope="col">Due Date</th>
-                        <th scope="col">Actions</th>
+              {error && <div className="alert alert-danger">{error}</div>}
+              <div className="table-responsive">
+                <table className="table table-hover table-bordered table-striped">
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Priority</th>
+                      <th scope="col">Progress</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredTasks.map(task => (
+                      <tr key={task.id}>
+                        <td>{task.title}</td>
+                        <td>{task.description}</td>
+                        <td>
+                          <span style={{width:"100px",position:"relative",left:"1%"}} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
+                            {task.status}
+                          </span>
+                        </td>
+                        <td>{task.priority}</td>
+                        <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
+                        <td>{task.due_date}</td>
+                        <td className="d-flex">
+                          <button className="btn btn-warning btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleEdit(task)}>
+                            <FontAwesomeIcon icon={faPenToSquare} /> Edit
+                          </button>
+                          <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.id)}>
+                            <FontAwesomeIcon icon={faTrashCan} /> Delete
+                          </button>
+                          <button className="btn btn-primary btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleAssign(task)}>
+                            <FontAwesomeIcon icon={faUserCheck} /> Assign
+                          </button>
+                          <button className="icon-button" style={{position:"relative",right:"20px"}} onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {filteredTasks.map(task => (
-                        <tr key={task.id}>
-                          <td>{task.title}</td>
-                          <td>{task.description}</td>
-                          <td>
-                            <span style={{width:"100px",position:"relative",left:"1%"}} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
-                              {task.status}
-                            </span>
-                          </td>
-                          <td>{task.priority}</td>
-                          <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
-                          <td>{task.due_date}</td>
-                          <td className="d-flex">
-                            <button className="btn btn-warning btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleEdit(task)}>
-                              <FontAwesomeIcon icon={faPenToSquare} /> Edit
-                            </button>
-                            <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.id)}>
-                              <FontAwesomeIcon icon={faTrashCan} /> Delete
-                            </button>
-                            <button className="btn btn-primary btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleAssign(task)}>
-                              <FontAwesomeIcon icon={faUserCheck} /> Assign
-                            </button>
-                            <button className="icon-button"style={{position:"relative",right:"20px"}} onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

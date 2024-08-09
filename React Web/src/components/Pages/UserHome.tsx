@@ -14,13 +14,16 @@ import { useNavigate } from 'react-router-dom';
 const UserHome: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
-  const handleEditProfile = () => {
+  const handleNavigationToProfile = () => {
     navigate('/profile'); 
+  };
+  const handleNavigationToTasks = () => {
+    navigate('/tasks');
   };
 
   return (
     <Layout role="user">
-      <Container className="user-home-container mt-5">
+      <Container className="user-home-container mt-5" id='userhome'>
         <Row className="mb-4">
           <Col>
             <Card className="welcome-card">
@@ -29,7 +32,7 @@ const UserHome: React.FC = () => {
                 <Card.Text>
                   Here is a summary of your recent activities and tasks.
                 </Card.Text>
-                <Button variant="primary" onClick={handleEditProfile}>View Profile</Button>
+                <Button variant="primary" onClick={handleNavigationToProfile}>View Profile</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -58,7 +61,7 @@ const UserHome: React.FC = () => {
                   <ListGroup.Item>Task 2</ListGroup.Item>
                   <ListGroup.Item>Task 3</ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary" className="mt-3">View All Tasks</Button>
+                <Button variant="primary" className="mt-3" onClick={handleNavigationToTasks}>View All Tasks</Button>
               </Card.Body>
             </Card>
           </Col>

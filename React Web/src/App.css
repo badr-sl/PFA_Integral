@@ -430,3 +430,389 @@ td>button#icon {
   background-color: #0056b3;
   border-color: #0056b3;
 }
+
+#main-card{
+  position: relative;
+    right: -5px;
+    width: 1379px;
+}
+/* General Improvements */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.container-fluid.main-content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-card, .profile-card, .user-home-container {
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+    box-shadow: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .profile-info strong {
+    width: auto;
+  }
+}
+
+/* Modernized Colors */
+.login-form .btn-primary, 
+.activity-summary-card .card-header, 
+.recent-tasks-card .card-header, 
+.useful-links-card .card-header, 
+.modal-header, 
+.profile-avatar {
+  background-color: #0066cc;
+}
+
+.login-form .btn-primary:hover, 
+.btn-primary:hover {
+  background-color: #004d99;
+}
+
+.modal-header, .modal-footer {
+  border: none;
+}
+
+/* Shadows and Borders */
+.login-card, 
+.profile-card, 
+.user-home-container, 
+.welcome-card, 
+.activity-summary-card, 
+.recent-tasks-card, 
+.useful-links-card, 
+.modal-content {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 102, 204, 0.1);
+}
+
+.table th, .table td {
+  border-color: #e9ecef;
+}
+
+/* Button Improvements */
+.btn-primary, .login-form .btn-primary {
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #004d99;
+}
+
+.icon-button {
+  color: #007bff;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.icon-button:hover {
+  color: #004d99;
+}
+
+/* Modal Animations */
+.modal.show {
+  display: block;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-header, .modal-footer {
+  padding: 1rem 1.5rem;
+}
+
+/* Additional Styling for Profile Page */
+.profile-info strong {
+  color: #0066cc;
+}
+
+.profile-info p {
+  color: #333;
+}
+
+/* Sidebar adjustments */
+.sidebar {
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link {
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-item.active .nav-link {
+  background-color: #0066cc;
+  color: #fff;
+}
+
+/* Improved Navbar */
+#nav {
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo .brackets {
+  color: #0066cc;
+}
+
+/* Responsive Adjustments for Tables */
+.table-responsive {
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.table td, .table th {
+  white-space: nowrap;
+}
+
+//----------------------------------------------------------------
+/* Base styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Navbar styles */
+#nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1030;
+}
+
+.logo {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 24px;
+  color: #1A73E8;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.logo .brackets {
+  color: #0066cc;
+}
+
+#titreNav {
+  margin-left: 45px;
+}
+
+#iconProfile {
+  margin-right: 15px;
+}
+
+/* Sidebar styles */
+#sidebarA, .sidebar {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  width: 250px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1020;
+}
+
+.sidebar {
+  left: 0;
+}
+
+#sidebarA {
+  right: 0;
+}
+
+.nav-link {
+  font-size: 1.1rem;
+  padding: 10px;
+  color: #333;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover, .nav-item.active .nav-link {
+  background-color: #0066cc;
+  color: #fff;
+}
+
+/* Main content styles */
+.main-content {
+  margin-left: 250px;
+  margin-right: 250px;
+  margin-top: 56px;
+  padding: 20px;
+}
+
+/* Table styles */
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 102, 204, 0.1);
+}
+
+/* Modal styles */
+.modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: #0066cc;
+  color: #fff;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+}
+
+.btn-close {
+  color: #ffffff;
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: #0066cc;
+  border-color: #0066cc;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #004d99;
+  border-color: #004d99;
+}
+
+.icon-button {
+  border: none;
+  background-color: transparent;
+  color: #0066cc;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.icon-button:hover {
+  color: #004d99;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #sidebarA, .sidebar {
+    width: 100%;
+    position: static;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 56px;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+}
+
+
+
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #0066cc;
+  color: #ffffff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.modal.show {
+  display: block;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+#adminhome{
+  padding: 1rem !important;
+  position: relative;
+  right: -122px;
+  min-width: 85%;
+}
+#userhome{
+  position: relative;
+    right: -129px;
+    top: 27px;
+    width: 1320px;
+}

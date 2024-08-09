@@ -127,7 +127,10 @@ const ManageUsers: React.FC = () => {
       <div className="d-flex">
         <AdminSidebar />
         <div className="main-content container mt-5">
-          <div className="card shadow-sm">
+          <div className="card shadow-sm" style={{
+    position: "relative",
+    right: "-5px",
+    width: "1356px"}}>
             <div className="card-body">
               <h2 className="card-title mb-4">Manage Users :</h2>
               <div className="dropdown mb-3 d-flex ">
