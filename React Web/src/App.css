@@ -435,6 +435,7 @@ td>button#icon {
   position: relative;
     right: -5px;
     width: 1379px;
+    margin-bottom: -16px;
 }
 /* General Improvements */
 body {

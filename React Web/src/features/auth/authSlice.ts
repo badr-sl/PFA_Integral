@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk<any, LoginCredentials, AsyncThunkConfi
       return response;
     } catch (error: any) {
       console.error('Login error:', error);
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
+      return rejectWithValue("Invalid credentials");
     }
   }
 );

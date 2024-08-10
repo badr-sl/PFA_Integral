@@ -12,6 +12,7 @@ import ProtectedRoute from './components/Common/ProtectedRoute';
 import Profile from './components/Pages/Profile';
 import Tasks from './components/Pages/Tasks';
 import UserTasks from './components/Pages/UserTasks';
+import Gantt from './components/Pages/Gantt';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/Gantt" element={<Gantt />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/UserTasks"element={<UserTasks />} />
 

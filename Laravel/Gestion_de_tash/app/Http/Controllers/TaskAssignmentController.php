@@ -53,6 +53,17 @@ class TaskAssignmentController extends Controller
     ]);
 
     try {
+        $existingAssignment = TaskAssignment::where('task_id', $request->task_id)
+                                            ->where('user_id', $request->user_id)
+                                            ->first();
+
+        if ($existingAssignment) {
+
+            return response()->json([
+                'message' => 'Task is already assigned to this user.',
+            ], 409); 
+        }
+
         // Créer l'assignation de la tâche
         $assignment = TaskAssignment::create([
             'task_id' => $request->task_id,
@@ -75,11 +86,12 @@ class TaskAssignmentController extends Controller
     } catch (\Exception $e) {
         // Retourner une réponse JSON en cas d'erreur
         return response()->json([
-            'message' => 'Failed to send email',
+            'message' => 'Failed to assign task or send email',
             'error' => $e->getMessage(),
         ], 500);
     }
 }
+
 
 
     /**

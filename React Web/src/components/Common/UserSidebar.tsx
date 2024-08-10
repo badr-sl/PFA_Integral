@@ -25,6 +25,10 @@ const UserSidebar: React.FC = () => {
           <Link to="/profile" className="nav-link">
             <FaUser className="me-2" /> Profile
           </Link>
+        </li><li className={`nav-item ${location.pathname === '/Gantt' ? 'active' : ''}`}>
+          <Link to="/Gantt" className="nav-link">
+            <FaUser className="me-2" /> Gantt
+          </Link>
         </li>
         <li className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}>
           <Link to="/settings" className="nav-link">

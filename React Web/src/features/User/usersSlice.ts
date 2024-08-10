@@ -96,17 +96,29 @@ export const updateUser = createAsyncThunk<
   }
 });
 
-export const assignTaskToUser = createAsyncThunk<void, AssignTaskPayload, {}>(
+export const assignTaskToUser = createAsyncThunk<void, AssignTaskPayload, { rejectValue: string }>(
   'users/assignTask',
-  async (payload, { getState }) => {
-    const state = getState() as RootState;
-    const token = state.auth.token;
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const token = state.auth.token;
 
-    await axios.post('http://localhost:8000/api/task-assignments', payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      await axios.post('http://localhost:8000/api/task-assignments', payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        // Extraction du message d'erreur spécifique
+        const errorMessage = error.response.data.message || 'Une erreur s\'est produite lors de l\'assignation de la tâche';
+        console.error(errorMessage);
+        return rejectWithValue(errorMessage);
+      } else {
+        // Erreur non-Axios ou sans réponse
+        return rejectWithValue('Une erreur inattendue s\'est produite');
+      }
+    }
   }
 );
 

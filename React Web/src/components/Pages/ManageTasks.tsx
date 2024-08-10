@@ -29,6 +29,7 @@ const ManageTasks: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [editTaskId, setEditTaskId] = useState<number | null>(null);
   const [assignTaskId, setAssignTaskId] = useState<number | null>(null);
+  const [assignErrorMessage, setAssignErrorMessage] = useState('');
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
@@ -113,22 +114,30 @@ const ManageTasks: React.FC = () => {
     setSelectedTask(task);
     setShowDetailsModal(true);
   };
+  const closeAssignModal = () => {
+    setShowAssignModal(false);
+    setAssignErrorMessage('');
+  };
 
   const handleAssignSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (assignTaskId !== null && selectedUserId !== null) {
       try {
-        const response = await dispatch(assignTaskToUser({ task_id: assignTaskId, user_id: selectedUserId }));
-        if (response.meta.requestStatus === 'fulfilled') {
-          setShowAssignModal(false); 
-          setShowSuccessModal(true); 
-          
-          setTimeout(() => {
-            setShowSuccessModal(false);
-          }, 2500);
-        } 
+        await dispatch(assignTaskToUser({ task_id: assignTaskId, user_id: selectedUserId })).unwrap();
+        closeAssignModal();
+        setShowSuccessModal(true);
+        
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 2500);
       } catch (error) {
-        console.error('Failed to assign task:', error);
+        if (typeof error === 'string') {
+          setAssignErrorMessage(error);
+        } else if (error && typeof error === 'object' && 'message' in error) {
+          setAssignErrorMessage(error.message as string);
+        } else {
+          setAssignErrorMessage('An unknown error occurred');
+        }
       }
     }
   };
@@ -185,94 +194,96 @@ const ManageTasks: React.FC = () => {
 
   return (
     <div>
-      <Navbar />
-      <div className="d-flex">
-        <AdminSidebar />
-        <div className="container-fluid mt-5 main-content">
-          <div className="card shadow-sm" id='main-card'>
-            <div className="card-body">
-              <h2 className="card-title mb-4">Manage Tasks :</h2>
-              <div className="dropdown mb-3 d-flex ">
-                <button className="btn btn-secondary dropdown-toggle" style={{position: "relative",left: "89%",bottom: "60px"}} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  <FontAwesomeIcon icon={faDownload} /> Download
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
-                  </li>
-                </ul>
-              </div>
-              <div className="d-flex justify-content-between mb-3">
-                <input
-                  type="text"
-                  className="form-control me-2"
-                  placeholder="Search tasks..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-                <select
-                  className="form-select"
-                  value={statusFilter}
-                  onChange={handleFilterChange}
-                >
-                  <option value="">All Statuses</option>
-                  <option value="todo">To Do</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-              <button className="btn btn-primary mb-3" onClick={() => { setNewTask({ title: '', description: '', status: 'todo', priority: '', due_date: '', progress: 0 }); setShowModal(true); }}><FaPlus /> Add Task</button>
-              {error && <div className="alert alert-danger">{error}</div>}
-              <div className="table-responsive">
-                <table className="table table-hover table-bordered table-striped">
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Title</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Priority</th>
-                      <th scope="col">Progress</th>
-                      <th scope="col">Due Date</th>
-                      <th scope="col">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredTasks.map(task => (
-                      <tr key={task.id}>
-                        <td>{task.title}</td>
-                        <td>{task.description}</td>
-                        <td>
-                          <span style={{width:"100px",position:"relative",left:"1%"}} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
-                            {task.status}
-                          </span>
-                        </td>
-                        <td>{task.priority}</td>
-                        <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
-                        <td>{task.due_date}</td>
-                        <td className="d-flex">
-                          <button className="btn btn-warning btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleEdit(task)}>
-                            <FontAwesomeIcon icon={faPenToSquare} /> Edit
-                          </button>
-                          <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.id)}>
-                            <FontAwesomeIcon icon={faTrashCan} /> Delete
-                          </button>
-                          <button className="btn btn-primary btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleAssign(task)}>
-                            <FontAwesomeIcon icon={faUserCheck} /> Assign
-                          </button>
-                          <button className="icon-button" style={{position:"relative",right:"20px"}} onClick={() => handleShowDetails(task)}><FontAwesomeIcon icon={faCircleInfo} /></button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+  <Navbar />
+  <div className="d-flex">
+    <AdminSidebar />
+    <div className="container-fluid mt-5 main-content">
+      <div className="card shadow-sm" id='main-card' style={{ position: "sticky", top: "0", zIndex: "1" }}>
+        <div className="card-body">
+          <h2 className="card-title mb-4">Manage Tasks :</h2>
+          <div className="dropdown mb-3 d-flex ">
+            <button className="btn btn-secondary dropdown-toggle" style={{ position: "relative", left: "89%", bottom: "60px" }} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <FontAwesomeIcon icon={faDownload} /> Download
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li>
+                <button className="dropdown-item" onClick={handleDownloadCSV}>Download CSV</button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={handleDownloadExcel}>Download Excel</button>
+              </li>
+            </ul>
+          </div>
+          <div className="d-flex justify-content-between mb-3">
+            <input
+              type="text"
+              className="form-control me-2"
+              placeholder="Search tasks..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <select
+              className="form-select"
+              value={statusFilter}
+              onChange={handleFilterChange}
+            >
+              <option value="">All Statuses</option>
+              <option value="todo">To Do</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <button className="btn btn-primary mb-3" onClick={() => { setNewTask({ title: '', description: '', status: 'todo', priority: '', due_date: '', progress: 0 }); setShowModal(true); }}><FaPlus /> Add Task</button>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <div className="table-responsive" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+            <table className="table table-hover table-bordered table-striped">
+              <thead className="thead-light">
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Progress</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTasks.map(task => (
+                  <tr key={task.id}>
+                    <td>{task.title}</td>
+                    <td>{task.description}</td>
+                    <td>
+                      <span style={{ width: "100px", position: "relative", left: "1%" }} className={`badge ${task.status === 'completed' ? 'bg-success' : task.status === 'in-progress' ? 'bg-warning' : 'bg-secondary'}`}>
+                        {task.status}
+                      </span>
+                    </td>
+                    <td>{task.priority}</td>
+                    <td>{task.status === 'todo' ? '0%' : task.status === 'completed' ? '100%' : `${task.progress}%`}</td>
+                    <td>{task.due_date}</td>
+                    <td className="d-flex">
+                      <button className="btn btn-warning btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleEdit(task)}>
+                        <FontAwesomeIcon icon={faPenToSquare} /> Edit
+                      </button>
+                      <button className="btn btn-danger btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleDelete(task.id)}>
+                        <FontAwesomeIcon icon={faTrashCan} /> Delete
+                      </button>
+                      <button className="btn btn-primary btn-sm me-2 d-flex align-items-center justify-content-evenly" onClick={() => handleAssign(task)}>
+                        <FontAwesomeIcon icon={faUserCheck} /> Assign
+                      </button>
+                      <button className="icon-button" style={{ position: "relative", right: "20px" }} onClick={() => handleShowDetails(task)}>
+                        <FontAwesomeIcon icon={faCircleInfo} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
       {/* Modal for adding/editing a task */}
       {showModal && (
@@ -323,31 +334,36 @@ const ManageTasks: React.FC = () => {
 
       {/* Modal for assigning a task */}
       {showAssignModal && (
-        <div className="modal show d-block" tabIndex={-1}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Assign Task</h5>
-                <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAssignModal(false)}></button>
-              </div>
-              <div className="modal-body">
-                <form onSubmit={handleAssignSubmit}>
-                  <div className="mb-3">
-                    <label htmlFor="user" className="form-label">Select User</label>
-                    <select className="form-select" id="user" onChange={(e) => setSelectedUserId(Number(e.target.value))}>
-                      <option value="">Select a user</option>
-                      {users.map(user => (
-                        <option key={user.id} value={user.id}>{user.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <button type="submit" className="btn btn-primary">Assign</button>
-                </form>
-              </div>
+      <div className="modal show d-block" tabIndex={-1}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Assign Task</h5>
+              <button type="button" className="btn-close" aria-label="Close" onClick={ closeAssignModal}></button>
+            </div>
+            <div className="modal-body">
+              {assignErrorMessage && (
+                <div className="alert alert-danger" role="alert">
+                  {assignErrorMessage}
+                </div>
+              )}
+              <form onSubmit={handleAssignSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="user" className="form-label">Select User</label>
+                  <select className="form-select" id="user" onChange={(e) => setSelectedUserId(Number(e.target.value))}>
+                    <option value="">Select a user</option>
+                    {users.map(user => (
+                      <option key={user.id} value={user.id}>{user.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <button type="submit" className="btn btn-primary">Assign</button>
+              </form>
             </div>
           </div>
         </div>
-      )}
+      </div>
+    )}
         {/* Modal for success message after assignment */}
 {showSuccessModal && (
   <div className="modal show d-block" tabIndex={-1}>
