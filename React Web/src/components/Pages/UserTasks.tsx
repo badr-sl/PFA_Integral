@@ -37,6 +37,16 @@ const UserTasks: React.FC = () => {
 
   useEffect(() => {
     applyFilters();
+    if (document.location.pathname !== "/admin-home") {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
   }, [tasks, statusFilter]);
 
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -153,7 +163,7 @@ const UserTasks: React.FC = () => {
               {filteredTasks.length === 0 ? (
                 <div>No tasks found.</div>
               ) : (
-                <div className="table-responsive">
+                <div className="table-responsive"style={{ maxHeight: '400px', overflowY: 'auto' }}>
                   <table className="table table-hover table-bordered table-striped">
                     <thead className="thead-light">
                       <tr>

@@ -31,6 +31,16 @@ const ManageUsers: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchAllUsers());
+    if (document.location.pathname !== "/admin-home") {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
   }, [dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -122,15 +132,12 @@ const ManageUsers: React.FC = () => {
   };
 
   return (
-    <div>
+    <div >
       <Navbar />
-      <div className="d-flex">
+      <div className="d-flex" >
         <AdminSidebar />
         <div className="main-content container mt-5">
-          <div className="card shadow-sm" style={{
-    position: "relative",
-    right: "-5px",
-    width: "1356px"}}>
+          <div className="card shadow-sm" style={{position: "relative",right: "-5px",width: "1356px"}}>
             <div className="card-body">
               <h2 className="card-title mb-4">Manage Users :</h2>
               <div className="dropdown mb-3 d-flex ">
@@ -167,7 +174,7 @@ const ManageUsers: React.FC = () => {
               <button className="btn btn-primary mb-3" onClick={handleAddUser}><FaUserPlus style={{ position: "relative", bottom: "2px" }} /> Add User</button>
 
               {loading ? <div className="alert alert-info">Loading...</div> : error ? <div className="alert alert-danger">{error}</div> : (
-                <div className="table-responsive">
+                <div className="table-responsive"style={{ maxHeight: '490px', overflowY: 'auto' }}>
                   <table className="table table-hover table-bordered table-striped">
                     <thead className="thead-light">
                       <tr>

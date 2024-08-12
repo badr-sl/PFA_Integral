@@ -443,7 +443,10 @@ body {
   background-color: #f0f2f5;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .container-fluid.main-content {
@@ -610,7 +613,9 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+ 
 }
+
 
 /* Navbar styles */
 #nav {
@@ -689,7 +694,7 @@ body {
 .table-responsive {
   border-radius: 8px;
   overflow: hidden;
-  margin-top: 20px;
+  margin-top: -9px;
 }
 
 .table {

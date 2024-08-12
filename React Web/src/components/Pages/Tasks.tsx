@@ -27,6 +27,14 @@ const Tasks: React.FC = () => {
       console.log("Fetching tasks for user ID:", user.id);
       dispatch(fetchUserTasks(user.id));
     }
+    if (document.location.pathname !== "/admin-home") {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
   }, [dispatch, token, user, navigate]);
 
   useEffect(() => {
@@ -100,7 +108,7 @@ const Tasks: React.FC = () => {
       <div className='d-flex'>
         <UserSidebar />
         <div className="container mt-5 main-content">
-          <div className="card shadow-sm" style={{position: "relative",right: "-26px",width: "1328px",}}>
+          <div className="card shadow-sm" style={{position: "relative",right: "-26px",width: "1355px",left:"10px"}}>
             <div className="card-body">
               <h2 className="card-title mb-4">User Tasks</h2>
               <div className="d-flex justify-content-between mb-3">
@@ -127,7 +135,7 @@ const Tasks: React.FC = () => {
                   {filteredTasks.length === 0 ? (
                     <div>No tasks found . </div>
                   ) : (
-                    <div className="table-responsive">
+                    <div className="table-responsive"style={{ maxHeight: '590px', overflowY: 'auto'}}>
                       <table className="table table-hover table-bordered table-striped">
                         <thead className="thead-light">
                           <tr>
