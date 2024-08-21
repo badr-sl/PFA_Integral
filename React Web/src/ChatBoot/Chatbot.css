@@ -1,0 +1,37 @@
+.chatbot-container {
+  width: 400px;
+  height: 500px;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+}
+
+.chatbot-message {
+  margin: 10px 0;
+}
+.react-chatbot-kit__chat-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.react-chatbot-kit__chat-container img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+}

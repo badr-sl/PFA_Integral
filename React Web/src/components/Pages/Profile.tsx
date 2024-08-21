@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState, AppDispatch } from '../../app/store';
@@ -11,18 +12,49 @@ const Profile: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  
+  const [fetchedUser, setFetchedUser] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [phoneNumber, setPhoneNumber] = useState(user?.PhoneNumber || '');
+  const [name, setName] = useState<string>(user?.name || '');
+  const [email, setEmail] = useState<string>(user?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState<string>(user?.phoneNumber || ''); 
   const [errors, setErrors] = useState<any>({});
 
-  if (!user) {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
+        const response = await axios.get(`http://localhost:8000/api/user/Profile/${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const userData = response.data;
+        setFetchedUser(userData);
+        setName(userData.name ?? '');
+        setEmail(userData.email ?? '');
+        setPhoneNumber(userData.PhoneNumber ?? ''); 
+      } catch (error) {
+        console.error('Failed to fetch user data', error);
+        setErrors({ ...errors, fetch: 'Failed to fetch user data' });
+      }
+    };
+
+    fetchUserData();
+  }, [user.id]);
+
+  if (!fetchedUser) {
     return <div>Loading...</div>;
   }
 
   const handleBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   const handleShowModal = () => {
@@ -35,22 +67,36 @@ const Profile: React.FC = () => {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
-      const updatedUser = await dispatch(updateUser({ id: user.id, name, email, PhoneNumber: phoneNumber })).unwrap();
-      // Update local state with the updated user data
-      setName(updatedUser.name);
-      setEmail(updatedUser.email);
-      setPhoneNumber(updatedUser.PhoneNumber);
+      console.log('Sending update with:', {
+        id: user.id,
+        name: name.trim(),
+        email: email.trim(),
+        phoneNumber: phoneNumber.trim() || '', 
+      });
+  
+      const updatedUser = await dispatch(updateUser({ 
+        id: user.id, 
+        name: name.trim(),
+        email: email.trim(),
+        PhoneNumber: phoneNumber.trim() || '' 
+      })).unwrap();
+  
+      console.log('Updated user data:', updatedUser);
+  
+      setName(updatedUser.name || '');
+      setEmail(updatedUser.email || '');
+      setPhoneNumber(updatedUser.PhoneNumber || '');
       setShowModal(false);
     } catch (err) {
-      setErrors(err);
+      console.error('Failed to update user data', err);
+      setErrors({ ...errors, update: 'Failed to update user data' });
     }
   };
 
   return (
     <Container className="profile-container mt-5">
-      
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
           <Card className="profile-card">
@@ -62,7 +108,7 @@ const Profile: React.FC = () => {
               </div>
               <div className="text-center mb-4">
                 <img
-                  src={`https://avatars.dicebear.com/api/initials/${user.name}.svg`}
+                  src={`https://avatars.dicebear.com/api/initials/${fetchedUser.name}.svg`}
                   alt="Profile Avatar"
                   className="profile-avatar"
                 />
@@ -117,7 +163,7 @@ const Profile: React.FC = () => {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
-              {errors.PhoneNumber && <Form.Text className="text-danger">{errors.PhoneNumber}</Form.Text>}
+              {errors.phoneNumber && <Form.Text className="text-danger">{errors.phoneNumber}</Form.Text>}
             </Form.Group>
 
             <Button variant="primary" type="submit">

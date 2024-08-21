@@ -13,6 +13,7 @@ import Profile from './components/Pages/Profile';
 import Tasks from './components/Pages/Tasks';
 import UserTasks from './components/Pages/UserTasks';
 import Gantt from './components/Pages/Gantt';
+import Settings from './components/Pages/Settings';
 
 const App: React.FC = () => {
   return (
@@ -25,7 +26,8 @@ const App: React.FC = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/Gantt" element={<Gantt />} />
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/UserTasks"element={<UserTasks />} />
+          <Route path="/UserTasks" element={<UserTasks />} />
+          <Route path="/settings"element= {<Settings />} />
 
           <Route
             path="/user-home"

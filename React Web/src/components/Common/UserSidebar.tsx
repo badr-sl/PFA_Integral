@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaTasks, FaUser, FaCog } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faChartGantt, faHouse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UserSidebar: React.FC = () => {
@@ -27,7 +27,7 @@ const UserSidebar: React.FC = () => {
           </Link>
         </li><li className={`nav-item ${location.pathname === '/Gantt' ? 'active' : ''}`}>
           <Link to="/Gantt" className="nav-link">
-            <FaUser className="me-2" /> Gantt
+          <FontAwesomeIcon icon={faChartGantt} fade /> Gantt
           </Link>
         </li>
         <li className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}>

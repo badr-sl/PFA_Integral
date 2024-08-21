@@ -12,6 +12,7 @@ import com.example.gestiondestash.models.TaskResponse;
 import com.example.gestiondestash.models.TaskResponseContainer;
 import com.example.gestiondestash.models.TaskStatusRequest;
 import com.example.gestiondestash.models.User;
+import com.example.gestiondestash.models.UserProfile;
 import com.example.gestiondestash.models.UserResponse;
 
 import java.util.List;
@@ -34,6 +35,8 @@ public interface ApiService {
 
     @POST("logout")
     Call<LogoutResponse> logout();
+    @GET("user/Profile/{Id}")
+    Call<UserProfile> getUserProfile(@Path("Id") int userId, @Header("Authorization") String token);
 
     @GET("find/{id}")
     Call<UserResponse> getUserById(@Path("id") int userId);

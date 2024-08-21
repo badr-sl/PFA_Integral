@@ -50,6 +50,7 @@ const ManageUsers: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(newUser);
     const updatedUser = { ...newUser }; 
     if (isEditMode && editUserId !== null) {
       const result = await dispatch(updateUser({ id: editUserId, ...updatedUser }));

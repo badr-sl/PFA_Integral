@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::get('/user/{userId}/tasks', [TaskAssignmentController::class, 'getUserTasks']);
     Route::get('/task-assignments', [TaskAssignmentController::class, 'index']);
+    Route::get('user/Profile/{Id}', [UserController::class, 'show']);
 
 
 

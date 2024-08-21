@@ -33,7 +33,7 @@ class UserController extends Controller
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|unique:users,email',
         'password' => 'required|string|min:3',
-        'phoneNumber' => 'required|string',
+        'PhoneNumber' => 'required|string',
         'role' => 'string|in:admin,user'
     ]);
 
@@ -41,7 +41,7 @@ class UserController extends Controller
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'phoneNumber' => $request->phoneNumber,
+        'PhoneNumber' => $request->PhoneNumber,
         'role' => $request->role
     ]);
 
@@ -75,7 +75,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'string|max:255',
                 'password' => 'string|min:3|nullable',
-                'phoneNumber' => 'string',
+                'PhoneNumber' => 'string',
                 'role' => 'string|in:admin,user'
             ]);
 
@@ -91,7 +91,7 @@ class UserController extends Controller
             }
 
             if ($request->filled('PhoneNumber')) {
-                $user->phoneNumber = $request->phoneNumber;
+                $user->PhoneNumber = $request->PhoneNumber;
             }
 
             if ($request->filled('role')) {

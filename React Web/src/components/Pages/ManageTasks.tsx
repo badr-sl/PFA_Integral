@@ -247,7 +247,7 @@ const ManageTasks: React.FC = () => {
           </div>
           <button className="btn btn-primary mb-3" onClick={() => { setNewTask({ title: '', description: '', status: 'todo', priority: '', due_date: '', progress: 0 }); setShowModal(true); }}><FaPlus /> Add Task</button>
           {error && <div className="alert alert-danger">{error}</div>}
-          <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+          <div className="table-responsive" style={{ maxHeight: '450px', overflowY: 'auto' }}>
             <table className="table table-hover table-bordered table-striped">
               <thead className="thead-light">
                 <tr>
