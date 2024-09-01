@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaTasks, FaUsers, FaCog } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { faEye, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faHouse, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AdminSidebar: React.FC = () => {
@@ -33,7 +33,7 @@ const AdminSidebar: React.FC = () => {
         </li>
         <li className={`nav-item ${location.pathname === '/ChatBot' ? 'active' : ''}`}>
           <Link to="/ChatBot" className="nav-link">
-            <FaCog className="me-2" /> ChatBot
+          <FontAwesomeIcon icon={faRobot} />  ChatBot
           </Link>
         </li>
       </ul>

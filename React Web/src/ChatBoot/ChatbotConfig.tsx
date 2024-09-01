@@ -24,12 +24,17 @@ const config = {
   widgets: [
     {
       widgetName: "options",
-      widgetFunc: (props: { actionProvider: { handleHelp: () => void; handleWeather: () => void; handleJoke: () => void; handleDateTime: () => void; }; }) => (
+      widgetFunc: (props: { actionProvider: {
+        handleMathOperation(): void;
+        handleFunFact(): void; handleHelp: () => void; handleWeather: () => void; handleJoke: () => void; handleDateTime: () => void; 
+}; }) => (
         <div className="chatbot-options">
           <button onClick={() => props.actionProvider.handleHelp()} className="chatbot-option-button">Aide</button>
           <button onClick={() => props.actionProvider.handleWeather()} className="chatbot-option-button">Météo</button>
           <button onClick={() => props.actionProvider.handleJoke()} className="chatbot-option-button">Blague</button>
           <button onClick={() => props.actionProvider.handleDateTime()} className="chatbot-option-button">Date et heure</button>
+          <button onClick={() => props.actionProvider.handleFunFact()} className="chatbot-option-button">FunFact</button>
+          <button onClick={() => props.actionProvider.handleMathOperation()} className="chatbot-option-button">MathOperation</button>
         </div>
       ),
     },

@@ -56,6 +56,45 @@ class ActionProvider {
       messages: [...prev.messages, message],
     }));
   }
+  handleMathOperation(operation: string) {
+    const [num1, operator, num2] = operation.split(" ");
+    let result;
+    switch (operator) {
+      case '+':
+        result = parseFloat(num1) + parseFloat(num2);
+        break;
+      case '-':
+        result = parseFloat(num1) - parseFloat(num2);
+        break;
+      case '*':
+        result = parseFloat(num1) * parseFloat(num2);
+        break;
+      case '/':
+        result = parseFloat(num1) / parseFloat(num2);
+        break;
+      default:
+        result = "Invalid operation";
+    }
+    
+    const message = this.createChatBotMessage(`The result of ${operation} is: ${result}`);
+    this.setState((prev: State) => ({
+      ...prev,
+      messages: [...prev.messages, message],
+    }));
+  }
+  handleFunFact() {
+    const facts = [
+      "Did you know? Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible.",
+      "Did you know? A single strand of spaghetti is called a 'spaghetto'.",
+      "Did you know? The Eiffel Tower can be 15 cm taller during the summer due to the expansion of the iron on hot days.",
+    ];
+    const randomFact = facts[Math.floor(Math.random() * facts.length)];
+    const message = this.createChatBotMessage(randomFact);
+    this.setState((prev: State) => ({
+      ...prev,
+      messages: [...prev.messages, message],
+    }));
+  }
   handleDateTime() {
     const now = new Date();
     const message = this.createChatBotMessage(`Current date and time is: ${now.toLocaleString()}`);
