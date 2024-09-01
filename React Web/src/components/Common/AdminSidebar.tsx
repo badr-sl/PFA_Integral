@@ -31,9 +31,9 @@ const AdminSidebar: React.FC = () => {
           <FontAwesomeIcon icon={faEye} /> Manage Users Tasks
           </Link>
         </li>
-        <li className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}>
-          <Link to="/settings" className="nav-link">
-            <FaCog className="me-2" /> Settings
+        <li className={`nav-item ${location.pathname === '/ChatBot' ? 'active' : ''}`}>
+          <Link to="/ChatBot" className="nav-link">
+            <FaCog className="me-2" /> ChatBot
           </Link>
         </li>
       </ul>

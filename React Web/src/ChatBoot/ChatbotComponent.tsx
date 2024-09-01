@@ -1,20 +1,26 @@
-import React from 'react';
+
 import Chatbot from 'react-chatbot-kit';
+import 'react-chatbot-kit/build/main.css';
 import config from './ChatbotConfig';
 import MessageParser from './MessageParser';
 import ActionProvider from './ActionProvider';
-import './Chatbot.css'; 
+import './Chatbot.css';
 
-const ChatbotComponent: React.FC = () => {
+
+
+const ChatbotComponent = () => {
   return (
-    <div className="chatbot-container">
-      <div className="chatbot-header">Chatbot</div>
-      <Chatbot 
-        config={config} 
-        messageParser={MessageParser} 
-        actionProvider={ActionProvider} 
+    <div className='globale'>
+      <div className="chatbot-container">
+      <div className="chatbot-header">Chatbot Assistant</div>
+      <Chatbot
+        config={config}
+        messageParser={MessageParser}
+        actionProvider={ActionProvider}
       />
     </div>
+    </div>
+    
   );
 };
 

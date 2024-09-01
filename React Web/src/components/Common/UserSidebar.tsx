@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTasks, FaUser, FaCog } from 'react-icons/fa';
+import { FaTasks, FaUser } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { faChartGantt, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faChartGantt, faHouse, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UserSidebar: React.FC = () => {
@@ -30,9 +30,9 @@ const UserSidebar: React.FC = () => {
           <FontAwesomeIcon icon={faChartGantt} fade /> Gantt
           </Link>
         </li>
-        <li className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}>
-          <Link to="/settings" className="nav-link">
-            <FaCog className="me-2" /> Settings
+        <li className={`nav-item ${location.pathname === '/ChatBot' ? 'active' : ''}`}>
+          <Link to="/ChatBot" className="nav-link">
+          <FontAwesomeIcon icon={faRobot} />  ChatBot
           </Link>
         </li>
         
