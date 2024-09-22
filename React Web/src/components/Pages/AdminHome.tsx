@@ -194,7 +194,7 @@ const AdminHome: React.FC = () => {
   return (
     <Layout role="admin" >
       <h1 className="text-center mb-4">Admin Dashboard</h1>
-      <p className="text-center">Welcome, {user?.name || 'Admin'}!</p>
+      
 
       <div className="container" id={"adminhome"}>
         <div className="row mb-4">

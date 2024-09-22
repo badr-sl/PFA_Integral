@@ -26,14 +26,14 @@ class AuthController extends Controller
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'phoneNumber' => $validatedData['phoneNumber'],
+                'PhoneNumber' => $validatedData['phoneNumber'],
                 'role' => 'user',
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'message' => 'User registered successfully',
+                'message' => 'User registered successfully lllllllll',
                 'user' => $user,
                 'token' => $token,
             ], 201);

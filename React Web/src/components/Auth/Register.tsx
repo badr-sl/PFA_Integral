@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../app/store';
 import { registerUser } from '../../features/auth/authSlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -68,7 +68,7 @@ const Register: React.FC = () => {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
-          <div className="card shadow-sm">
+          <div className="card shadow-sm" style={{position: 'relative',top: '80px'}}>
             <div className="card-body">
               <h2 className="text-center mb-4">Register</h2>
               <form onSubmit={handleSubmit} className="mt-4">
@@ -120,12 +120,15 @@ const Register: React.FC = () => {
                   />
                   {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber}</p>}
                 </div>
-                <button type="submit" className="btn btn-primary btn-block">
+                <button type="submit" className="btn btn-primary btn-block" style={{position:'relative',left:'40%'}}>
                   Register
                 </button>
               </form>
               {status === 'loading' && <p className="text-center mt-3">Loading...</p>}
               {error && <p className="text-center text-danger mt-3">{error}</p>}
+              <p className="text-center mt-3">
+                Already have an account? <Link to="/login">Login here</Link>
+              </p>
             </div>
           </div>
         </div>

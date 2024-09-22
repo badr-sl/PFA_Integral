@@ -97,7 +97,7 @@ const UserTasks: React.FC = () => {
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.setAttribute('download', 'tasks.csv');
+    link.setAttribute('download', 'User Tasks.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -116,7 +116,7 @@ const UserTasks: React.FC = () => {
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Tasks');
-    XLSX.writeFile(workbook, 'tasks.xlsx');
+    XLSX.writeFile(workbook, 'User Tasks.xlsx');
   };
 
   return (

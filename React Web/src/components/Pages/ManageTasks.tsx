@@ -74,6 +74,9 @@ const ManageTasks: React.FC = () => {
       } else if (value === 'completed') {
         newProgress = 100;
       }
+    } else if (name === 'progress' && newTask.status === 'in-progress') {
+      // Allow manual progress update only for 'in-progress' tasks
+      newProgress = parseInt(value, 10);
     }
 
     setNewTask({ ...newTask, [name]: value, progress: newProgress });

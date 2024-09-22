@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTasks, FaUsers, FaCog } from 'react-icons/fa';
+import { FaTasks, FaUsers} from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { faEye, faHouse, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
